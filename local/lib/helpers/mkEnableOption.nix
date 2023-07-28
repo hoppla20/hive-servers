@@ -1,7 +1,4 @@
-{
-  inputs,
-  cell,
-}: default: let
+{inputs}: default: let
   l = inputs.nixpkgs.lib // builtins;
 in
   l.mkOption {

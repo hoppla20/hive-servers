@@ -1,7 +1,4 @@
-{
-  inputs,
-  cell,
-}: let
+{inputs}: let
   l = inputs.nixpkgs.lib // builtins;
 in {
   data = {};

@@ -48,33 +48,27 @@
       allowUnfree = true;
     };
 
-    localLibs = hive.pick self ["lib"];
+    lib = inputs.haumea.lib.load {
+      src = ./local/lib;
+      loader = inputs.haumea.lib.loaders.scoped;
+      transformer = [inputs.haumea.lib.transformers.liftDefault];
+      inputs = removeAttrs (inputs // {inherit inputs;}) ["self"];
+    };
   in
     with std.blockTypes;
     with hive.blockTypes;
       hive.growOn {
-        inherit inputs nixpkgsConfig;
-        cellsFrom = incl ./local ["lib"];
-        cellBlocks = [
-          (nixago "cfg")
-          (functions "helpers")
-        ];
-      }
-      (hive.grow {
         inherit nixpkgsConfig;
-        inputs = inputs // {inherit localLibs;};
+        inputs = inputs // {localLib = lib;};
         cellsFrom = incl ./local ["repo"];
         cellBlocks = [
           (nixago "configs")
           (devshells "shells")
         ];
-      })
-      {
-        lib = localLibs;
       }
       (hive.grow {
         inherit nixpkgsConfig;
-        inputs = inputs // {inherit localLibs;};
+        inputs = inputs // {localLib = lib;};
         cellsFrom = ./nixos;
         cellBlocks = [
           nixosModules
@@ -87,15 +81,21 @@
       }
       (hive.grow {
         inherit nixpkgsConfig;
-        inputs = inputs // {inherit (self) nixosModules nixosProfiles;};
+        inputs =
+          inputs
+          // {
+            inherit (self) nixosModules nixosProfiles;
+            localLib = lib;
+          };
         cellsFrom = ./servers;
         cellBlocks = [
-          nixosConfigurations
+          lib.blockTypes.nixosConfigurations
         ];
       })
       {
         nixosConfigurations = hive.collect self "nixosConfigurations";
-      };
+      }
+      {inherit lib;};
 
   /*
   Flake local nix config

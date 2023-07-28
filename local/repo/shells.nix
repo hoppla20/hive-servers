@@ -17,7 +17,7 @@ in
         (stdLib.cfg.editorconfig cell.configs.editorconfig)
         (stdLib.cfg.lefthook cell.configs.lefthook)
         (stdLib.cfg.mdbook cell.configs.mdbook)
-        ((stdLib.dev.mkNixago inputs.localLibs.cfg.vscode-settings) cell.configs.vscode-settings)
+        ((stdLib.dev.mkNixago inputs.localLib.cfg.vscode-settings) cell.configs.vscode-settings)
       ];
 
       packages = [

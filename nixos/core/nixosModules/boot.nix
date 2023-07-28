@@ -7,7 +7,7 @@
   ...
 }: let
   l = lib // builtins;
-  helpers = inputs.localLibs.helpers;
+  helpers = inputs.localLib.helpers;
 
   cfg = config.bee.modules.${moduleName};
 in {
