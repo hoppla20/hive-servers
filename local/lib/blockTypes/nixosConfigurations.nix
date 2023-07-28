@@ -2,6 +2,8 @@
   inputs,
   root,
 }: let
+  l = inputs.nixpkgs.lib // builtins;
+
   inherit (root.helpers) mkCommand;
 in {
   name = "nixosConfigurations";
@@ -11,24 +13,28 @@ in {
     fragment,
     fragmentRelPath,
     target,
-  }: [
+  }: let
+    fragments = l.splitString "\/" fragmentRelPath;
+    cellName = l.elemAt fragments 0;
+    targetName = l.elemAt fragments 2;
+    collectedTargetName = inputs.hive.renamers.cell-target cellName targetName;
+
+    nixos-generators = inputs.nixos-generators.packages.${currentSystem}.default;
+  in [
     (mkCommand
       currentSystem
       "runTestVm"
       "create and run a test vm using this configuration"
-      [inputs.nixos-generators.packages.${currentSystem}.default] ''
-        # ${target}
-        echo "running test vm for ${target}"
-        VM_NAME="${target}"
-        VM_DIR="$PRJ_DATA_HOME/test-vms/$VM_NAME"
+      [nixos-generators] ''
+        # fragment: ${fragment}
 
-        rm -rf "$VM_DIR"
-        mkdir -p "$VM_DIR"
+        rm -rf "$PRJ_DATA_HOME/test-vms/${collectedTargetName}"
+        mkdir -p "$PRJ_DATA_HOME/test-vms/${collectedTargetName}"
 
-        nixos-generators \
+        nixos-generate \
           --format vm \
-          --flake "$PRJ_ROOT#${fragment}" \
-          --system "${currentSystem}"
+          --flake "$PRJ_ROOT#${collectedTargetName}" \
+          --system "${target.bee.system}" \
           --run
       '' {})
   ];

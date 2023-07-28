@@ -18,10 +18,5 @@
       extraModules = builtins.attrValues inputs.nixosModules;
       extraProfiles = builtins.attrValues inputs.nixosProfiles;
     };
-
-    fileSystems."/" = {
-      label = "nixos";
-      fsType = "ext4";
-    };
   };
 }

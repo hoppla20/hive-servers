@@ -48,6 +48,8 @@
       allowUnfree = true;
     };
 
+    l = inputs.nixpkgs.lib // builtins;
+
     lib = inputs.haumea.lib.load {
       src = ./local/lib;
       loader = inputs.haumea.lib.loaders.scoped;
@@ -62,7 +64,7 @@
         inputs = inputs // {localLib = lib;};
         cellsFrom = incl ./local ["repo"];
         cellBlocks = [
-          (nixago "configs")
+          (lib.blockTypes.nixago "configs")
           (devshells "shells")
         ];
       }

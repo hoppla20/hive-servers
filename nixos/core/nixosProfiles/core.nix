@@ -41,4 +41,10 @@
   };
 
   system.stateVersion = lib.mkDefault "23.05";
+
+  # defaults to pass checks
+  fileSystems."/" = lib.mkDefault {
+    label = "nixos";
+    fsType = "ext4";
+  };
 }

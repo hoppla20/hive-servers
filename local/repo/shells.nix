@@ -11,24 +11,28 @@ in
 
       imports = [inputs.std.std.devshellProfiles.default];
 
-      nixago = [
-        stdLib.cfg.conform
-        (stdLib.cfg.treefmt cell.configs.treefmt)
-        (stdLib.cfg.editorconfig cell.configs.editorconfig)
-        (stdLib.cfg.lefthook cell.configs.lefthook)
-        (stdLib.cfg.mdbook cell.configs.mdbook)
-        ((stdLib.dev.mkNixago inputs.localLib.cfg.vscode-settings) cell.configs.vscode-settings)
-      ];
-
-      packages = [
-        inputs.unstable.legacyPackages.nixd
-      ];
-
       commands = [
         {
           category = "rendering";
           package = inputs.nixpkgs.mdbook;
         }
+      ];
+
+      devshell = {
+        packages = [
+          inputs.unstable.legacyPackages.nixd
+        ];
+
+        meta.description = "hive-servers shell environment";
+      };
+
+      nixago = [
+        stdLib.cfg.conform
+        cell.configs.treefmt
+        cell.configs.editorconfig
+        cell.configs.lefthook
+        cell.configs.mdbook
+        cell.configs.vscode-settings
       ];
     };
   }

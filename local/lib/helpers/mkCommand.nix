@@ -1,11 +1,14 @@
 {inputs}: currentSystem: name: description: deps: command: args: let
-  inherit (inputs.nixpkgs) lib stdenv haskell shellcheck runtimeShell;
-  inherit (inputs.nixpkgs.haskell.lib.compose) justStaticExecutables;
+  pkgs = inputs.nixpkgs.legacyPackages.${currentSystem};
+
+  inherit (inputs.nixpkgs) lib;
+  inherit (pkgs) stdenv haskell shellcheck runtimeShell;
+  inherit (pkgs.haskell.lib.compose) justStaticExecutables;
 in
   args
   // {
     inherit name description;
-    command = inputs.nixpkgs.writeTextFile {
+    command = pkgs.writeTextFile {
       inherit name;
       executable = true;
       checkPhase = ''

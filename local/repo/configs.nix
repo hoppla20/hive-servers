@@ -1,8 +1,13 @@
 {
   inputs,
   cell,
-}: {
-  editorconfig = {
+}: let
+  inherit (inputs) localLib;
+  inherit (inputs.std.lib.dev) mkNixago;
+
+  cfg = inputs.std.lib.cfg // localLib.cfg;
+in {
+  editorconfig = cfg.editorconfig {
     data = {
       root = true;
 
@@ -39,7 +44,7 @@
   };
 
   # Tool Homepage: https://numtide.github.io/treefmt/
-  treefmt = {
+  treefmt = cfg.treefmt {
     packages = [
       inputs.nixpkgs.alejandra
       inputs.nixpkgs.nodePackages.prettier
@@ -81,7 +86,7 @@
     };
   };
 
-  vscode-settings = {
+  vscode-settings = cfg.vscode-settings {
     data = {
       "nix.serverPath" = "nixd";
       "nix.serverSettings" = {
@@ -108,7 +113,7 @@
   };
 
   # Tool Homepage: https://github.com/evilmartians/lefthook
-  lefthook = {
+  lefthook = cfg.lefthook {
     data = {
       commit-msg = {
         commands = {
@@ -133,7 +138,7 @@
   };
 
   # Tool Homepage: https://rust-lang.github.io/mdBook/
-  mdbook = {
+  mdbook = cfg.mdbook {
     # add preprocessor packages here
     packages = [
       inputs.nixpkgs.mdbook-linkcheck
