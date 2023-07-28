@@ -2,7 +2,7 @@
   inputs,
   cell,
 }:
-inputs.hive.load {
+cell.helpers.load {
   inherit inputs cell;
   src = ./cfg;
 }

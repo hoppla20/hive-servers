@@ -89,19 +89,19 @@
           eval = {
             target = {
               args = ["-f" "default.nix"];
-              installable = "__std";
+              installable = "x86_64-linux";
             };
           };
           formatting = {
             command = "alejandra";
           };
-          #options = {
-          #  enable = true;
-          #  target = {
-          #    args = [];
-          #    installable = "";
-          #  };
-          #};
+          options = {
+            enable = true;
+            target = {
+              args = ["-f" "default.nix"];
+              installable = "nixosConfigurations.test-all.options";
+            };
+          };
         };
       };
     };

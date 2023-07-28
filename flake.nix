@@ -15,11 +15,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    haumea.url = "github:nix-community/haumea/v0.2.2";
     hive = {
       url = "github:hoppla20/hive/implement-modules-and-profiles";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        haumea.follows = "std/dmerge/haumea";
+        haumea.follows = "haumea";
         paisano.follows = "std/paisano";
       };
     };
@@ -29,7 +30,7 @@
     };
     incl = {
       url = "github:divnix/incl";
-      inputs.nixlib.follows = "std/dmerge/haumea/nixpkgs";
+      inputs.nixlib.follows = "haumea/nixpkgs";
     };
 
     nixos-generators.url = "github:nix-community/nixos-generators";
@@ -56,6 +57,7 @@
         cellsFrom = incl ./local ["lib"];
         cellBlocks = [
           (nixago "cfg")
+          (functions "helpers")
         ];
       }
       (hive.grow {
@@ -69,30 +71,31 @@
       })
       {
         lib = localLibs;
+      }
+      (hive.grow {
+        inherit nixpkgsConfig;
+        inputs = inputs // {inherit localLibs;};
+        cellsFrom = ./nixos;
+        cellBlocks = [
+          nixosModules
+          nixosProfiles
+        ];
+      })
+      {
+        nixosModules = hive.collect self "nixosModules";
+        nixosProfiles = hive.collect self "nixosProfiles";
+      }
+      (hive.grow {
+        inherit nixpkgsConfig;
+        inputs = inputs // {inherit (self) nixosModules nixosProfiles;};
+        cellsFrom = ./servers;
+        cellBlocks = [
+          nixosConfigurations
+        ];
+      })
+      {
+        nixosConfigurations = hive.collect self "nixosConfigurations";
       };
-  #(hive.grow {
-  #  inherit inputs nixpkgsConfig;
-  #  cellsFrom = ./nixos;
-  #  cellBlocks = [
-  #    nixosModules
-  #    nixosProfiles
-  #  ];
-  #})
-  #{
-  #  nixosModules = hive.collect self "nixosModules";
-  #  nixosProfiles = hive.collect self "nixosProfiles";
-  #}
-  #(hive.grow {
-  #  inherit nixpkgsConfig;
-  #  inputs = inputs // {inherit (self) nixosModules nixosProfiles;};
-  #  cellsFrom = ./servers;
-  #  cellBlocks = [
-  #    nixosConfigurations
-  #  ];
-  #})
-  #{
-  #  nixosConfigurations = hive.collect self "nixosConfigurations";
-  #};
 
   /*
   Flake local nix config
