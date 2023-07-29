@@ -1,6 +1,6 @@
-{ inputs
-, cell
-,
+{
+  inputs,
+  cell,
 }: {
   all = {
     bee = {
@@ -8,7 +8,7 @@
       pkgs = inputs.nixpkgs;
       home = inputs.home-manager;
 
-      profiles = [ "core-core" ];
+      profiles = ["core-core"];
 
       modules = {
         core-boot.enable = true;

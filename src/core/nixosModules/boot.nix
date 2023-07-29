@@ -1,17 +1,16 @@
-{ inputs
-, cell
-,
-}: moduleName: { lib
-               , config
-               , ...
-               }:
-let
+{
+  inputs,
+  cell,
+}: moduleName: {
+  lib,
+  config,
+  ...
+}: let
   l = lib // builtins;
   helpers = inputs.localLib.helpers;
 
   cfg = config.bee.modules.${moduleName};
-in
-{
+in {
   options = {
     grub = {
       enable = helpers.mkEnableOption cfg.enable;
