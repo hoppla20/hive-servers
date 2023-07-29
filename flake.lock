@@ -274,14 +274,18 @@
         ]
       },
       "locked": {
-        "lastModified": 1690630319,
-        "narHash": "sha256-HKlLb9K7bOWnRJ8AFWiGE/surMt2z2JLAvHt6+Dpvd4=",
-        "type": "git",
-        "url": "file:///home/vincentcui/Workspace/nix/hive"
+        "lastModified": 1690639483,
+        "narHash": "sha256-K3MH9Kqgn1obYYuWcGm+dzuAe+DqOc/ahHzXS0BmW/w=",
+        "owner": "hoppla20",
+        "repo": "hive",
+        "rev": "c13b1cabe11d6ab5ce944531811276297f7bd4c0",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/vincentcui/Workspace/nix/hive"
+        "owner": "hoppla20",
+        "ref": "implement-modules-and-profiles",
+        "repo": "hive",
+        "type": "github"
       }
     },
     "home-manager": {

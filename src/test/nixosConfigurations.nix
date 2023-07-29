@@ -8,11 +8,27 @@
       pkgs = inputs.nixpkgs;
       home = inputs.home-manager;
 
-      profiles = ["core-core"];
+      profiles = [
+        "core-core"
+        "core-utils"
+        "core-nix"
+        "core-zsh"
+      ];
 
       modules = {
-        core-boot.enable = true;
-        core-boot.grub.vmConfig = true;
+        core-boot = {
+          enable = true;
+          grub = {
+            enable = true;
+            vmConfig = true;
+          };
+        };
+        core-substituters = {
+          enable = true;
+          # substituters = [
+          #   {url = "..."; key = "...";}
+          # ];
+        };
       };
 
       extraModules = builtins.attrValues inputs.nixosModules;

@@ -22,17 +22,6 @@
     ];
   };
 
-  programs = {
-    zsh = {
-      enable = true;
-      enableCompletion = true;
-      autosuggestions.enable = true;
-      syntaxHighlighting.enable = true;
-    };
-  };
-
-  users.defaultUserShell = pkgs.zsh;
-
   # https://github.com/NixOS/nixpkgs/issues/180175
   systemd.services.NetworkManager-wait-online.enable = false;
 
