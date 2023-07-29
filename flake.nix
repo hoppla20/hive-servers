@@ -22,7 +22,8 @@
 
     haumea.url = "github:nix-community/haumea/v0.2.2";
     hive = {
-      url = "github:hoppla20/hive/implement-modules-and-profiles";
+      #url = "github:hoppla20/hive/implement-modules-and-profiles";
+      url = "git+file:///home/vincentcui/Workspace/nix/hive";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         haumea.follows = "haumea";
@@ -82,7 +83,7 @@
         };
       cellsFrom = ./src;
       cellBlocks = with blockTypes; [
-        (nixago "configs" {cli = false;})
+        (nixago "configs")
         (devshells "shells")
         nixosModules
         nixosProfiles

@@ -2,7 +2,7 @@
   pkgs = inputs.nixpkgs.legacyPackages.${currentSystem};
 
   inherit (inputs.nixpkgs) lib;
-  inherit (pkgs) stdenv haskell shellcheck runtimeShell;
+  inherit (pkgs) stdenv shellcheck runtimeShell;
   inherit (pkgs.haskell.lib.compose) justStaticExecutables;
 in
   args

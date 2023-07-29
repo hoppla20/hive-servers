@@ -274,18 +274,14 @@
         ]
       },
       "locked": {
-        "lastModified": 1690577823,
-        "narHash": "sha256-uOiSHNR9gKaRBRgxlzZxkYY5fmki+gFYG7M6w+4gYyY=",
-        "owner": "hoppla20",
-        "repo": "hive",
-        "rev": "59d1da6adfb5be0029851145b83a53a01962cb4d",
-        "type": "github"
+        "lastModified": 1690630319,
+        "narHash": "sha256-HKlLb9K7bOWnRJ8AFWiGE/surMt2z2JLAvHt6+Dpvd4=",
+        "type": "git",
+        "url": "file:///home/vincentcui/Workspace/nix/hive"
       },
       "original": {
-        "owner": "hoppla20",
-        "ref": "implement-modules-and-profiles",
-        "repo": "hive",
-        "type": "github"
+        "type": "git",
+        "url": "file:///home/vincentcui/Workspace/nix/hive"
       }
     },
     "home-manager": {
@@ -804,11 +800,11 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1690367991,
-        "narHash": "sha256-2VwOn1l8y6+cu7zjNE8MgeGJNNz1eat1HwHrINeogFA=",
+        "lastModified": 1690548937,
+        "narHash": "sha256-x3ZOPGLvtC0/+iFAg9Kvqm/8hTAIkGjc634SqtgaXTA=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "c9cf0708f00fbe553319258e48ca89ff9a413703",
+        "rev": "2a9d660ff0f7ffde9d73be328ee6e6f10ef66b28",
         "type": "github"
       },
       "original": {

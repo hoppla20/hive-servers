@@ -3,7 +3,6 @@
   cell,
 }: let
   inherit (inputs) localLib;
-  inherit (inputs.std.lib.dev) mkNixago;
 
   cfg = inputs.std.lib.cfg // localLib.cfg;
 in {
@@ -46,7 +45,6 @@ in {
   # Tool Homepage: https://numtide.github.io/treefmt/
   treefmt = cfg.treefmt {
     packages = [
-      inputs.nixpkgs.alejandra
       inputs.nixpkgs.nodePackages.prettier
       inputs.nixpkgs.nodePackages.prettier-plugin-toml
       inputs.nixpkgs.shfmt
@@ -115,10 +113,16 @@ in {
         };
       };
       pre-commit = {
+        parallel = true;
         commands = {
           treefmt = {
-            run = "treefmt --fail-on-change {staged_files}";
+            run = "treefmt {staged_files}";
             skip = ["merge" "rebase"];
+            stage_fixed = true;
+          };
+          nil-diagnostics = {
+            glob = "*.nix";
+            run = "echo '{staged_files}' | xargs -d ' ' -i sh -c 'nil diagnostics {}'";
           };
         };
       };

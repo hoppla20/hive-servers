@@ -2,6 +2,7 @@
   inputs,
   cell,
 }: targetName: {
+  pkgs,
   lib,
   config,
   ...
@@ -30,7 +31,7 @@
     };
   };
 
-  users.defaultUserShell = config.bee.pkgs.zsh;
+  users.defaultUserShell = pkgs.zsh;
 
   # https://github.com/NixOS/nixpkgs/issues/180175
   systemd.services.NetworkManager-wait-online.enable = false;
