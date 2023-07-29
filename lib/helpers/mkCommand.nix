@@ -1,45 +1,46 @@
-{inputs}: currentSystem: name: description: deps: command: args: let
+{ inputs }: currentSystem: name: description: deps: command: args:
+let
   pkgs = inputs.nixpkgs.legacyPackages.${currentSystem};
 
   inherit (inputs.nixpkgs) lib;
   inherit (pkgs) stdenv haskell shellcheck runtimeShell;
   inherit (pkgs.haskell.lib.compose) justStaticExecutables;
 in
-  args
+args
   // {
-    inherit name description;
-    command = pkgs.writeTextFile {
-      inherit name;
-      executable = true;
-      checkPhase = ''
-        runHook preCheck
-        ${stdenv.shellDryRun} "$target"
-        # use shellcheck which does not include docs
-        # pandoc takes long to build and documentation isn't needed for in nixpkgs usage
-        ${lib.getExe (justStaticExecutables shellcheck.unwrapped)} "$target"
-        runHook postCheck
-      '';
-      text =
-        ''
-          #!${runtimeShell}
-          set -o errexit
-          set -o nounset
-          set -o pipefail
+  inherit name description;
+  command = pkgs.writeTextFile {
+    inherit name;
+    executable = true;
+    checkPhase = ''
+      runHook preCheck
+      ${stdenv.shellDryRun} "$target"
+      # use shellcheck which does not include docs
+      # pandoc takes long to build and documentation isn't needed for in nixpkgs usage
+      ${lib.getExe (justStaticExecutables shellcheck.unwrapped)} "$target"
+      runHook postCheck
+    '';
+    text =
+      ''
+        #!${runtimeShell}
+        set -o errexit
+        set -o nounset
+        set -o pipefail
 
-          if test -z "$PRJ_ROOT"; then
-            echo "All Standard Block Type Actions require an environment that fulfills the PRJ Base Directiory Specification"
-            echo "see: https://github.com/numtide/prj-spec"
-            echo "Tip: To achieve that, you can enter a Standard direnv environment or run the action via the Standard CLI/TUI"
-            exit 1
-          fi
+        if test -z "$PRJ_ROOT"; then
+          echo "All Standard Block Type Actions require an environment that fulfills the PRJ Base Directiory Specification"
+          echo "see: https://github.com/numtide/prj-spec"
+          echo "Tip: To achieve that, you can enter a Standard direnv environment or run the action via the Standard CLI/TUI"
+          exit 1
+        fi
 
-          # Action Code follows ...
-        ''
-        + lib.optionalString (deps != []) ''
-          # Be optionally reproducible due to potential overhead to load some
-          # quaasi-ubiquitous dependencies that are already generally available
-          export PATH="${lib.makeBinPath deps}:$PATH"
-        ''
-        + command;
-    };
-  }
+        # Action Code follows ...
+      ''
+      + lib.optionalString (deps != [ ]) ''
+        # Be optionally reproducible due to potential overhead to load some
+        # quaasi-ubiquitous dependencies that are already generally available
+        export PATH="${lib.makeBinPath deps}:$PATH"
+      ''
+      + command;
+  };
+}

@@ -1,11 +1,10 @@
-{
-  inputs,
-  cell,
-}: targetName: {
-  lib,
-  config,
-  ...
-}: {
+{ inputs
+, cell
+,
+}: targetName: { lib
+               , config
+               , ...
+               }: {
   console = {
     keyMap = lib.mkDefault "us";
     useXkbConfig = true;

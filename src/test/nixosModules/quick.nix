@@ -1,17 +1,18 @@
-{
-  inputs,
-  cell,
-}: moduleName: {
-  lib,
-  config,
-  options,
-  ...
-}: let
+{ inputs
+, cell
+,
+}: moduleName: { lib
+               , config
+               , options
+               , ...
+               }:
+let
   l = lib // builtins;
   localLib = inputs.localLib;
 
   cfg = config.bee.modules.${moduleName};
-in {
+in
+{
   imports = [
     inputs.nixos-generators.nixosModules.all-formats
   ];
@@ -26,8 +27,8 @@ in {
     resolution = l.mkOption {
       type = l.types.submodule {
         options = {
-          x = l.mkOption {type = l.types.int.unsign;};
-          y = l.mkOption {type = l.types.int.unsign;};
+          x = l.mkOption { type = l.types.int.unsign; };
+          y = l.mkOption { type = l.types.int.unsign; };
         };
         default = {
           x = 1280;
@@ -38,7 +39,7 @@ in {
   };
 
   config = {
-    formatConfigs.vm-bootloader = {config, ...}: {
+    formatConfigs.vm-bootloader = { config, ... }: {
       virtualisation = {
         cores = 4;
         memorySize = 4096;

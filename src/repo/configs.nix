@@ -1,12 +1,14 @@
-{
-  inputs,
-  cell,
-}: let
+{ inputs
+, cell
+,
+}:
+let
   inherit (inputs) localLib;
   inherit (inputs.std.lib.dev) mkNixago;
 
   cfg = inputs.std.lib.cfg // localLib.cfg;
-in {
+in
+{
   editorconfig = cfg.editorconfig {
     data = {
       root = true;
@@ -46,7 +48,7 @@ in {
   # Tool Homepage: https://numtide.github.io/treefmt/
   treefmt = cfg.treefmt {
     packages = [
-      inputs.nixpkgs.alejandra
+      inputs.nixpkgs.nixpkgs-fmt
       inputs.nixpkgs.nodePackages.prettier
       inputs.nixpkgs.nodePackages.prettier-plugin-toml
       inputs.nixpkgs.shfmt
@@ -57,12 +59,12 @@ in {
     data = {
       formatter = {
         nix = {
-          command = "alejandra";
-          includes = ["*.nix"];
+          command = "nixpkgs-fmt";
+          includes = [ "*.nix" ];
         };
         prettier = {
           command = "prettier";
-          options = ["--plugin" "prettier-plugin-toml" "--write"];
+          options = [ "--plugin" "prettier-plugin-toml" "--write" ];
           includes = [
             "*.css"
             "*.html"
@@ -79,8 +81,8 @@ in {
         };
         shell = {
           command = "shfmt";
-          options = ["-i" "2" "-s" "-w"];
-          includes = ["*.sh"];
+          options = [ "-i" "2" "-s" "-w" ];
+          includes = [ "*.sh" ];
         };
       };
     };
@@ -88,24 +90,12 @@ in {
 
   vscode-settings = cfg.vscode-settings {
     data = {
-      "nix.serverPath" = "nixd";
+      "nix.enableLanguageServer" = true;
+      "nix.serverPath" = "nil";
       "nix.serverSettings" = {
-        nixd = {
-          eval = {
-            target = {
-              args = ["-f" "default.nix"];
-              installable = "x86_64-linux";
-            };
-          };
+        nil = {
           formatting = {
-            command = "alejandra";
-          };
-          options = {
-            enable = true;
-            target = {
-              args = ["-f" "default.nix"];
-              installable = "nixosConfigurations.test-all.options";
-            };
+            command = [ "nixpkgs-fmt" ];
           };
         };
       };
@@ -122,7 +112,7 @@ in {
             run = ''
               [[ "$(head -n 1 {1})" =~ ^WIP(:.*)?$|^wip(:.*)?$|fixup\!.*|squash\!.* ]] ||
               conform enforce --commit-msg-file {1}'';
-            skip = ["merge" "rebase"];
+            skip = [ "merge" "rebase" ];
           };
         };
       };
@@ -130,7 +120,7 @@ in {
         commands = {
           treefmt = {
             run = "treefmt --fail-on-change {staged_files}";
-            skip = ["merge" "rebase"];
+            skip = [ "merge" "rebase" ];
           };
         };
       };
@@ -152,11 +142,11 @@ in {
         src = "docs";
       };
       build.build-dir = "docs/build";
-      preprocessor = {};
+      preprocessor = { };
       output = {
-        html = {};
+        html = { };
         # Tool Homepage: https://github.com/Michael-F-Bryan/mdbook-linkcheck
-        linkcheck = {};
+        linkcheck = { };
       };
     };
     output = "book.toml";

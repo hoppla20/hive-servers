@@ -45,59 +45,61 @@
     disko.url = "github:nix-community/disko";
   };
 
-  outputs = {
-    self,
-    hive,
-    std,
-    incl,
-    ...
-  } @ inputs: let
-    nixpkgsConfig = {
-      allowUnfree = true;
-    };
+  outputs =
+    { self
+    , hive
+    , std
+    , incl
+    , ...
+    } @ inputs:
+    let
+      nixpkgsConfig = {
+        allowUnfree = true;
+      };
 
-    l = inputs.unstable.lib // builtins;
-    blockTypes = l.attrsets.mergeAttrsList [std.blockTypes hive.blockTypes lib.blockTypes];
+      l = inputs.unstable.lib // builtins;
+      blockTypes = l.attrsets.mergeAttrsList [ std.blockTypes hive.blockTypes lib.blockTypes ];
 
-    lib = inputs.haumea.lib.load {
-      src = ./lib;
-      loader = inputs.haumea.lib.loaders.scoped;
-      transformer = [inputs.haumea.lib.transformers.liftDefault];
-      inputs = removeAttrs (inputs // {inherit inputs;}) ["self"];
-    };
+      lib = inputs.haumea.lib.load {
+        src = ./lib;
+        loader = inputs.haumea.lib.loaders.scoped;
+        transformer = [ inputs.haumea.lib.transformers.liftDefault ];
+        inputs = removeAttrs (inputs // { inherit inputs; }) [ "self" ];
+      };
 
-    outputNixosModules = hive.collect self "nixosModules";
-    outputNixosProfiles = hive.collect self "nixosProfiles";
-    outputNixosConfigurations = hive.collect self "nixosConfigurations";
-  in
-    hive.growOn {
-      inherit nixpkgsConfig;
-      inputs =
-        inputs
-        // {
-          nixosModules = outputNixosModules;
-          nixosProfiles = outputNixosProfiles;
-          localLib = lib;
-        };
-      cellsFrom = ./src;
-      cellBlocks = with blockTypes; [
-        (nixago "configs" {cli = false;})
-        (devshells "shells" {cli = false;})
-        nixosModules
-        nixosProfiles
-        nixosConfigurations
-      ];
-    }
-    {
-      inherit lib;
-      nixosModules = outputNixosModules;
-      nixosProfiles = outputNixosProfiles;
-      nixosConfigurations = outputNixosConfigurations;
-      apps = l.mapAttrs (_: shell: {default = shell.flakeApp;}) (hive.harvest self ["repo" "shells" "default"]);
-    };
+      outputNixosModules = hive.collect self "nixosModules";
+      outputNixosProfiles = hive.collect self "nixosProfiles";
+      outputNixosConfigurations = hive.collect self "nixosConfigurations";
+    in
+    hive.growOn
+      {
+        inherit nixpkgsConfig;
+        inputs =
+          inputs
+          // {
+            nixosModules = outputNixosModules;
+            nixosProfiles = outputNixosProfiles;
+            localLib = lib;
+          };
+        cellsFrom = ./src;
+        cellBlocks = with blockTypes; [
+          (nixago "configs" { cli = false; })
+          (devshells "shells")
+          nixosModules
+          nixosProfiles
+          nixosConfigurations
+        ];
+      }
+      {
+        inherit lib;
+        nixosModules = outputNixosModules;
+        nixosProfiles = outputNixosProfiles;
+        nixosConfigurations = outputNixosConfigurations;
+        apps = l.mapAttrs (_: shell: { default = shell.flakeApp; }) (hive.harvest self [ "repo" "shells" "default" ]);
+      };
 
   /*
-  Flake local nix config
+    Flake local nix config
   */
 
   nixConfig = {
