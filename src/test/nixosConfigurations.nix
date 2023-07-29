@@ -16,6 +16,10 @@
       ];
 
       modules = {
+        core-core = {
+          enable = true;
+          hostName = "test";
+        };
         core-boot = {
           enable = true;
           grub = {
@@ -29,10 +33,22 @@
           #   {url = "..."; key = "...";}
           # ];
         };
+        #test-testVm = {
+        #  enable = true;
+        #};
       };
 
-      extraModules = builtins.attrValues inputs.nixosModules;
-      extraProfiles = builtins.attrValues inputs.nixosProfiles;
+      extraModules = [
+        inputs.nixosModules.core-core
+        inputs.nixosModules.core-boot
+        inputs.nixosModules.core-networking
+        inputs.nixosModules.core-substituters
+      ];
+      extraProfiles = [
+        inputs.nixosProfiles.core-utils
+        inputs.nixosProfiles.core-nix
+        inputs.nixosProfiles.core-zsh
+      ];
     };
   };
 }

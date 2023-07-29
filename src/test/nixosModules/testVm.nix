@@ -1,14 +1,16 @@
 {
   inputs,
   cell,
-}: moduleName: {
+  localLib,
+}: renamer: moduleName: {
   lib,
   config,
   options,
   ...
 }: let
   l = lib // builtins;
-  localLib = inputs.localLib;
+  inherit (lib) types;
+  inherit (localLib) helpers;
 
   cfg = config.bee.modules.${moduleName};
 in {
@@ -18,21 +20,19 @@ in {
 
   options = {
     diskSize = l.mkOption {
-      type = l.types.ints.unsign;
+      type = types.ints.unsigned;
       default = 10240;
     };
-    useEFIBoot = localLib.mkEnableOption true;
-    headless = localLib.mkEnableOption false;
-    resolution = l.mkOption {
-      type = l.types.submodule {
-        options = {
-          x = l.mkOption {type = l.types.int.unsign;};
-          y = l.mkOption {type = l.types.int.unsign;};
-        };
-        default = {
-          x = 1280;
-          y = 800;
-        };
+    useEFIBoot = helpers.mkEnableOption true;
+    headless = helpers.mkEnableOption false;
+    resolution = {
+      x = l.mkOption {
+        type = types.ints.unsigned;
+        default = 1280;
+      };
+      y = l.mkOption {
+        type = types.ints.unsigned;
+        default = 800;
       };
     };
   };

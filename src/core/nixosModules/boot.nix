@@ -1,7 +1,7 @@
 {
   inputs,
   cell,
-}: moduleName: {
+}: renamer: moduleName: {
   lib,
   config,
   ...

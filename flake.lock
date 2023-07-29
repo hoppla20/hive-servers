@@ -274,11 +274,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1690639483,
-        "narHash": "sha256-K3MH9Kqgn1obYYuWcGm+dzuAe+DqOc/ahHzXS0BmW/w=",
+        "lastModified": 1690641802,
+        "narHash": "sha256-IZjfeCw9Zn84pSEZl6cSc0Sv8xXdqS6zaJLCsCLqaM8=",
         "owner": "hoppla20",
         "repo": "hive",
-        "rev": "c13b1cabe11d6ab5ce944531811276297f7bd4c0",
+        "rev": "eabbef259d1c7107f469f5be12050eab04458139",
         "type": "github"
       },
       "original": {
