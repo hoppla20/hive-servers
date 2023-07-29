@@ -6,7 +6,6 @@ let
   l = inputs.nixpkgs.lib // builtins;
 
   inherit (root.helpers) mkCommand;
-  inherit (inputs.hive) collectOps;
 in
 {
   name = "nixosConfigurations";
