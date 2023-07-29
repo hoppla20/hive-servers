@@ -140,10 +140,10 @@ in {
       book = {
         language = "en";
         multilingual = false;
-        title = "CONFIGURE-ME";
+        title = "hive-servers";
         src = "docs";
       };
-      build.build-dir = "docs/build";
+      build.build-dir = "build/docs";
       preprocessor = {};
       output = {
         html = {};

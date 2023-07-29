@@ -18,8 +18,9 @@ in
 
       commands = [
         {
-          category = "rendering";
-          package = inputs.nixpkgs.mdbook;
+          name = "nil-diagnostics";
+          category = "dev";
+          command = "find . -type f -name \"*.nix\" -exec nil diagnostics {} \\;";
         }
       ];
 

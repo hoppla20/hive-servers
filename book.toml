@@ -2,10 +2,10 @@
 language = "en"
 multilingual = false
 src = "docs"
-title = "CONFIGURE-ME"
+title = "hive-servers"
 
 [build]
-build-dir = "docs/build"
+build-dir = "build/docs"
 
 [output]
 [output.html]
