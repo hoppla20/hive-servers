@@ -55,17 +55,6 @@ in {
       {})
     (mkCommand
       currentSystem
-      "showBeeOptions"
-      "Outputs a JSON with all bee module options loaded for the given configuration"
-      [inputs.nixpkgs.legacyPackages.${currentSystem}.jq]
-      ''
-        # fragment: ${fragment}
-
-        nix eval --json "$PRJ_ROOT#nixosConfigurations.${collectedTargetName}.options.bee.modules" | jq
-      ''
-      {})
-    (mkCommand
-      currentSystem
       "showBeeConfig"
       "Outputs a JSON with all bee module configuration"
       [inputs.nixpkgs.legacyPackages.${currentSystem}.jq]
