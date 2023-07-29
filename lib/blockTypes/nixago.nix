@@ -1,10 +1,13 @@
 {
   inputs,
   root,
+  super,
 }: let
+  inherit (super) addSelectorToFunctor;
   inherit (root.helpers) mkCommand;
 in
   name: {
+    __functor = addSelectorToFunctor;
     inherit name;
     type = "nixago";
     actions = {

@@ -11,20 +11,16 @@ in
 
       imports = [inputs.std.std.devshellProfiles.default];
 
+      packages = [
+        inputs.unstable.legacyPackages.nixd
+      ];
+
       commands = [
         {
           category = "rendering";
           package = inputs.nixpkgs.mdbook;
         }
       ];
-
-      devshell = {
-        packages = [
-          inputs.unstable.legacyPackages.nixd
-        ];
-
-        meta.description = "hive-servers shell environment";
-      };
 
       nixago = [
         stdLib.cfg.conform
@@ -34,5 +30,9 @@ in
         cell.configs.mdbook
         cell.configs.vscode-settings
       ];
+
+      devshell = {
+        meta.description = "hive-servers shell environment";
+      };
     };
   }

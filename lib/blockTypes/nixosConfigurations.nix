@@ -28,6 +28,8 @@ in {
       [nixos-generators] ''
         # fragment: ${fragment}
 
+        echo "${fragment}"
+
         rm -rf "$PRJ_DATA_HOME/test-vms/${collectedTargetName}"
         mkdir -p "$PRJ_DATA_HOME/test-vms/${collectedTargetName}"
 
