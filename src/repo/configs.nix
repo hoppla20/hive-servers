@@ -124,6 +124,9 @@ in {
             glob = "*.nix";
             run = "echo '{staged_files}' | xargs -d ' ' -i sh -c 'nil diagnostics {}'";
           };
+          statix = {
+            run = "echo '{staged_files}' | xargs -d ' ' -i sh -c 'statix check {}'";
+          };
         };
       };
     };

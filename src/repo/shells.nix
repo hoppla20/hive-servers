@@ -23,6 +23,11 @@ in
           category = "dev";
           command = "find . -type f -name \"*.nix\" -exec nil diagnostics {} \\;";
         }
+        {
+          package = inputs.nixpkgs.statix;
+          category = "dev";
+          help = "statix {check,fix}";
+        }
       ];
 
       nixago = [

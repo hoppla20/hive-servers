@@ -40,6 +40,6 @@ in {
     ];
 
     nix.settings.trusted-substituters = builtins.catAttrs "url" cfg.substituters;
-    nix.settings.trusted-public-keys = builtins.filter (k: !isNull k) (builtins.catAttrs "key" cfg.substituters);
+    nix.settings.trusted-public-keys = builtins.filter (k: k != null) (builtins.catAttrs "key" cfg.substituters);
   };
 }
