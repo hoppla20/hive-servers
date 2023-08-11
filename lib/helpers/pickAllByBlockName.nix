@@ -41,4 +41,4 @@ Outputs:
     (l.getAttrs l.systems.doubles.all flakeRoot) # avoid infinite recursion
   );
 in
-  l.mapAttrs (cell: blocks: l.attrByPath [blockName] {} blocks) cells
+  l.mapAttrs (cell: l.attrByPath [blockName] {}) cells

@@ -49,12 +49,9 @@ in {
       let
         shared = {
           virtualisation = {
-            cores = cfg.cores;
+            inherit (cfg) cores diskSize useEFIBoot resolution;
             memorySize = cfg.memory;
-            diskSize = cfg.diskSize;
-            useEFIBoot = cfg.useEFIBoot;
             graphics = !cfg.headless;
-            resolution = cfg.resolution;
             qemu = {
               guestAgent.enable = true;
             };
