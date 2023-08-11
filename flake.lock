@@ -274,16 +274,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1690641802,
-        "narHash": "sha256-IZjfeCw9Zn84pSEZl6cSc0Sv8xXdqS6zaJLCsCLqaM8=",
-        "owner": "hoppla20",
+        "lastModified": 1691517535,
+        "narHash": "sha256-CLqUlTyaLXZb9MDy5QkfZiNJOxeLK4H6VeyRXmlK5KU=",
+        "owner": "divnix",
         "repo": "hive",
-        "rev": "eabbef259d1c7107f469f5be12050eab04458139",
+        "rev": "295e8bd3498b04bc73b28d48dda0a0766833b3b5",
         "type": "github"
       },
       "original": {
-        "owner": "hoppla20",
-        "ref": "implement-modules-and-profiles",
+        "owner": "divnix",
         "repo": "hive",
         "type": "github"
       }

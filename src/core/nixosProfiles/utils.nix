@@ -1,7 +1,7 @@
 {
   inputs,
   cell,
-}: targetName: {
+}: {
   pkgs,
   lib,
   config,

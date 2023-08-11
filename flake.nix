@@ -10,19 +10,9 @@
       flake = false;
     };
 
-    home-manager = {
-      url = "github:nix-community/home-manager/release-23.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    devshell = {
-      url = "github:numtide/devshell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     haumea.url = "github:nix-community/haumea/v0.2.2";
     hive = {
-      url = "github:hoppla20/hive/implement-modules-and-profiles";
+      url = "github:divnix/hive";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         haumea.follows = "haumea";
@@ -41,6 +31,14 @@
       inputs.nixlib.follows = "haumea/nixpkgs";
     };
 
+    home-manager = {
+      url = "github:nix-community/home-manager/release-23.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    devshell = {
+      url = "github:numtide/devshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-generators.url = "github:nix-community/nixos-generators";
     disko.url = "github:nix-community/disko";
   };
@@ -52,12 +50,7 @@
     incl,
     ...
   } @ inputs: let
-    nixpkgsConfig = {
-      allowUnfree = true;
-    };
-
     l = inputs.unstable.lib // builtins;
-    blockTypes = l.attrsets.mergeAttrsList [std.blockTypes hive.blockTypes lib.blockTypes];
 
     lib = inputs.haumea.lib.load {
       src = ./lib;
@@ -66,9 +59,17 @@
       inputs = removeAttrs (inputs // {inherit inputs;}) ["self"];
     };
 
-    outputNixosModules = hive.collect self "nixosModules";
-    outputNixosProfiles = hive.collect self "nixosProfiles";
-    outputNixosConfigurations = hive.collect self "nixosConfigurations";
+    nixpkgsConfig = {
+      allowUnfree = true;
+    };
+
+    blockTypes = l.attrsets.mergeAttrsList [std.blockTypes hive.blockTypes lib.blockTypes];
+
+    output = {
+      nixosModules = lib.helpers.pickAllByBlockName self "nixosModules";
+      nixosProfiles = lib.helpers.pickAllByBlockName self "nixosProfiles";
+      nixosConfigurations = hive.collect self "nixosConfigurations";
+    };
   in
     hive.growOn
     {
@@ -76,24 +77,21 @@
       inputs =
         inputs
         // {
-          nixosModules = outputNixosModules;
-          nixosProfiles = outputNixosProfiles;
+          inherit (output) nixosModules nixosProfiles;
           localLib = lib;
         };
       cellsFrom = ./src;
       cellBlocks = with blockTypes; [
         (nixago "configs")
         (devshells "shells")
-        (nixosModules {cli = false;})
-        (nixosProfiles {cli = false;})
+        ((functions "nixosModules") // {cli = false;})
+        ((functions "nixosProfiles") // {cli = false;})
         nixosConfigurations
       ];
     }
     {
       inherit lib;
-      nixosModules = outputNixosModules;
-      nixosProfiles = outputNixosProfiles;
-      nixosConfigurations = outputNixosConfigurations;
+      inherit (output) nixosModules nixosProfiles nixosConfigurations;
       apps = l.mapAttrs (_: shell: {default = shell.flakeApp;}) (hive.harvest self ["repo" "shells" "default"]);
     };
 

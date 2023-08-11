@@ -2,9 +2,8 @@
   inputs,
   root,
 }: let
-  l = inputs.nixpkgs.lib // builtins;
-
   inherit (root.helpers) mkCommand;
+  l = inputs.nixpkgs.lib // builtins;
 in {
   name = "nixosConfigurations";
   type = "nixosConfigurations";
@@ -14,29 +13,46 @@ in {
     fragmentRelPath,
     target,
   }: let
+    pkgs = inputs.nixpkgs.legacyPackages.${currentSystem};
     fragments = l.splitString "\/" fragmentRelPath;
     cellName = l.elemAt fragments 0;
     targetName = l.elemAt fragments 2;
-    collectedTargetName = inputs.hive.renamers.cell-target cellName targetName;
+    collectedTargetName = "${cellName}-${targetName}";
 
-    nixos-generators = inputs.nixos-generators.packages.${currentSystem}.default;
+    sharedRunTestVm = ''
+      set -x
+      DATA_LOCATION="$PRJ_DATA_HOME/${fragmentRelPath}"
+      export NIX_DISK_IMAGE="$DATA_LOCATION/nixos.qcow2"
+      export NIX_EFI_VARS="$DATA_LOCATION/nixos-efi-vars.fd"
+      rm -rf "$DATA_LOCATION" && mkdir -p "$DATA_LOCATION"
+    '';
   in [
     (mkCommand
       currentSystem
       "runTestVm"
       "create and run a test vm using this configuration"
-      [nixos-generators]
+      [pkgs.nix-output-monitor]
       ''
         # fragment: ${fragment}
 
-        rm -rf "$PRJ_DATA_HOME/test-vms/${collectedTargetName}"
-        mkdir -p "$PRJ_DATA_HOME/test-vms/${collectedTargetName}"
+        ${sharedRunTestVm}
 
-        nixos-generate \
-          --format vm \
-          --flake "$PRJ_ROOT#${collectedTargetName}" \
-          --system "${target.bee.system}" \
-          --run
+        RESULT=$(nom build --no-link --print-out-paths "$PRJ_ROOT#nixosConfigurations.${collectedTargetName}.config.formats.vm")
+        exec "$RESULT"
+      ''
+      {})
+    (mkCommand
+      currentSystem
+      "runTestVmGrub"
+      "create and run a test vm (with grub) using this configuration"
+      [pkgs.nix-output-monitor]
+      ''
+        # fragment: ${fragment}
+
+        ${sharedRunTestVm}
+
+        RESULT=$(nom build --no-link --print-out-paths "$PRJ_ROOT#nixosConfigurations.${collectedTargetName}.config.formats.vm-bootloader")
+        exec "$RESULT"
       ''
       {})
     (mkCommand
@@ -55,13 +71,13 @@ in {
       {})
     (mkCommand
       currentSystem
-      "showBeeConfig"
-      "Outputs a JSON with all bee module configuration"
+      "showHopplaConfig"
+      "Outputs a JSON with all hoppla module configurations"
       [inputs.nixpkgs.legacyPackages.${currentSystem}.jq]
       ''
         # fragment: ${fragment}
 
-        nix eval --json "$PRJ_ROOT#nixosConfigurations.${collectedTargetName}.config.bee.modules" | jq
+        nix eval --json "$PRJ_ROOT#nixosConfigurations.${collectedTargetName}.config.hoppla" | jq
       ''
       {})
   ];

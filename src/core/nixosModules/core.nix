@@ -1,23 +1,26 @@
 {
   inputs,
   cell,
-}: renamer: moduleName: {
+}: {
   pkgs,
   lib,
   config,
   ...
 }: let
   inherit (lib) types;
+  inherit (inputs.localLib) helpers;
+  l = lib // builtins;
 
-  cfg = config.bee.modules.${moduleName};
+  cfg = config.hoppla.core;
 in {
-  options = {
+  options.hoppla.core = {
+    enable = helpers.mkEnableOption false;
     hostName = lib.mkOption {
       type = types.str;
     };
   };
 
-  config = {
+  config = l.mkIf cfg.enable {
     networking.hostName = cfg.hostName;
 
     console = {

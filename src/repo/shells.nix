@@ -14,6 +14,7 @@ in
       packages = [
         inputs.nixpkgs.nil
         inputs.nixpkgs.alejandra
+        inputs.nixos-generators.packages.default
       ];
 
       commands = [

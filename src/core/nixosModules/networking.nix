@@ -1,7 +1,7 @@
 {
   inputs,
   cell,
-}: renamer: moduleName: {
+}: {
   pkgs,
   lib,
   config,
@@ -9,8 +9,13 @@
   ...
 }: let
   inherit (lib) types;
+  inherit (inputs.localLib) helpers;
+  l = lib // builtins;
+
+  cfg = config.hoppla.core;
 in {
-  options = {
+  options.hoppla.core.networking = {
+    enable = helpers.mkEnableOption cfg.enable;
     timeServers =
       options.networking.timeServers
       // {
@@ -24,9 +29,14 @@ in {
 
     hostId = lib.mkOption {
       type = types.str;
-      default = builtins.substring 0 8 (builtins.hashString "md5" config.bee.modules.${renamer "core"}.hostName);
+      default = builtins.substring 0 8 (builtins.hashString "md5" cfg.hostName);
     };
   };
 
-  config = {};
+  config = l.mkIf (cfg.enable && cfg.networking.enable) {
+    networking = {
+      networkmanager.enable = true;
+      inherit (cfg.networking) hostId timeServers;
+    };
+  };
 }

@@ -1,30 +1,28 @@
 {
   inputs,
   cell,
-}: renamer: moduleName: {
+}: {
   lib,
   config,
   ...
 }: let
+  inherit (inputs.localLib) helpers;
   l = lib // builtins;
-  helpers = inputs.localLib.helpers;
 
-  cfg = config.bee.modules.${moduleName};
+  cfg = config.hoppla.core;
 in {
-  options = {
-    grub = {
-      enable = helpers.mkEnableOption cfg.enable;
-      vmConfig = helpers.mkEnableOption false;
-    };
+  options.hoppla.core.boot = {
+    enable = helpers.mkEnableOption cfg.enable;
+    grub.enable = helpers.mkEnableOption cfg.boot.enable;
   };
 
-  config = {
+  config = l.mkIf (cfg.enable && cfg.boot.enable) {
     boot.loader = {
-      efi.canTouchEfiVariables = !cfg.grub.vmConfig;
-      grub = l.mkIf cfg.grub.enable {
+      efi.canTouchEfiVariables = l.mkDefault true;
+      grub = l.mkIf cfg.boot.grub.enable {
         enable = true;
         efiSupport = true;
-        efiInstallAsRemovable = cfg.grub.vmConfig;
+        efiInstallAsRemovable = l.mkDefault false;
         device = "nodev";
       };
     };
