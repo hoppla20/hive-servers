@@ -24,11 +24,17 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         devshell.follows = "devshell";
+        arion.follows = "arion";
       };
     };
     incl = {
       url = "github:divnix/incl";
       inputs.nixlib.follows = "haumea/nixpkgs";
+    };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs-stable.follows = "nixpkgs";
     };
 
     home-manager = {
@@ -37,6 +43,10 @@
     };
     devshell = {
       url = "github:numtide/devshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    arion = {
+      url = "github:hercules-ci/arion/v0.2.1.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-generators.url = "github:nix-community/nixos-generators";
@@ -82,11 +92,17 @@
         };
       cellsFrom = ./src;
       cellBlocks = with blockTypes; [
+        # repo
         (nixago "configs")
         (devshells "shells")
+
+        # nixos
         ((functions "nixosModules") // {cli = false;})
         ((functions "nixosProfiles") // {cli = false;})
         nixosConfigurations
+
+        # services
+        (arion "arion")
       ];
     }
     {

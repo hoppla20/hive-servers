@@ -42,6 +42,10 @@ in {
         default = 800;
       };
     };
+    forwardPorts = l.mkOption {
+      type = types.listOf types.attrs;
+      default = [];
+    };
   };
 
   config = l.mkMerge [
@@ -49,7 +53,7 @@ in {
       let
         shared = {
           virtualisation = {
-            inherit (cfg.vm) cores diskSize useEFIBoot resolution;
+            inherit (cfg.vm) cores diskSize useEFIBoot resolution forwardPorts;
             memorySize = cfg.vm.memory;
             graphics = !cfg.vm.headless;
             qemu = {

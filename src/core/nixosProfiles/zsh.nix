@@ -14,6 +14,7 @@
       autosuggestions.enable = true;
       syntaxHighlighting.enable = true;
     };
+    starship.enable = true;
   };
 
   users.defaultUserShell = pkgs.zsh;

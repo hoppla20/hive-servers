@@ -28,6 +28,9 @@ in
           category = "dev";
           help = "statix {check,fix}";
         }
+        {
+          package = inputs.nixpkgs.sops;
+        }
       ];
 
       nixago = [
