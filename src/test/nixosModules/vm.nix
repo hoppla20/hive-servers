@@ -12,12 +12,12 @@
   inherit (lib) types;
   inherit (localLib) helpers;
 
-  cfg = config.hoppla.test.vm;
+  cfg = config.hoppla.test;
 in {
   imports = [inputs.nixos-generators.nixosModules.all-formats];
 
   options.hoppla.test.vm = {
-    enable = helpers.mkEnableOption false;
+    enable = helpers.mkEnableOption cfg.enable;
     cores = l.mkOption {
       type = types.ints.unsigned;
       default = 1;
@@ -49,9 +49,9 @@ in {
       let
         shared = {
           virtualisation = {
-            inherit (cfg) cores diskSize useEFIBoot resolution;
-            memorySize = cfg.memory;
-            graphics = !cfg.headless;
+            inherit (cfg.vm) cores diskSize useEFIBoot resolution;
+            memorySize = cfg.vm.memory;
+            graphics = !cfg.vm.headless;
             qemu = {
               guestAgent.enable = true;
             };

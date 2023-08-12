@@ -2,14 +2,16 @@
   inputs,
   cell,
 }: {
-  default = {
+  core = {
     imports =
-      # modules
+      # core
       builtins.attrValues inputs.nixosModules.core
-      ++ builtins.attrValues cell.nixosModules
-      # profiles
       ++ builtins.attrValues inputs.nixosProfiles.core
-      ++ [cell.nixosProfiles.boot];
+      # users
+      ++ builtins.attrValues inputs.nixosModules.users
+      # test
+      ++ builtins.attrValues cell.nixosModules
+      ++ builtins.attrValues cell.nixosProfiles;
 
     bee = {
       system = "x86_64-linux";
@@ -21,10 +23,11 @@
       core = {
         enable = true;
         hostName = "test";
-        boot.enable = true;
       };
-      test.vm = {
-        memory = 2048;
+      users.vincentcui.enable = true;
+      test = {
+        enable = true;
+        vm.memory = 2048;
       };
     };
   };

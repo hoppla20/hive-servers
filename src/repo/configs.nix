@@ -117,7 +117,6 @@ in {
         commands = {
           treefmt = {
             run = "treefmt {staged_files}";
-            skip = ["merge" "rebase"];
             stage_fixed = true;
           };
           nil-diagnostics = {
