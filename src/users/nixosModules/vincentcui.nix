@@ -1,12 +1,10 @@
 {
   inputs,
   cell,
-}: {
-  pkgs,
-  lib,
   config,
-  ...
+  options,
 }: let
+  inherit (inputs.nixpkgs) lib;
   inherit (inputs.localLib) helpers;
   l = lib // builtins;
 
@@ -23,7 +21,7 @@ in {
         description = "Vincent Cui";
         isNormalUser = true;
         hashedPassword = "$6$rounds=4096$BGIzgpigyvSnrnak$dOv/C2.bZjDqWYvPTic/rf6nIrvUDFmBuOmvQLzTNjSdm28xQBF7JSnIxlXTpdauAuPZQbSxRvJ18grEmg/Pd0";
-        openssh.authorizedKeys.keyFiles = [./ssh/yubikey.pub ./ssh/nitrokey.pub];
+        openssh.authorizedKeys.keyFiles = [./__ssh/yubikey.pub ./__ssh/nitrokey.pub];
         extraGroups = [
           "wheel"
           "networkmanager"
@@ -45,7 +43,7 @@ in {
           users = ["vincentcui"];
           commands = [
             {
-              command = "${pkgs.nixos-rebuild}/bin/nixos-rebuild";
+              command = "${inputs.nixpkgs.nixos-rebuild}/bin/nixos-rebuild";
               options = ["SETENV" "NOPASSWD"];
             }
             {

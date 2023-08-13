@@ -1,10 +1,8 @@
 {
   inputs,
   cell,
-}: {
-  lib,
   config,
-  ...
+  options,
 }: {
   boot.loader = {
     efi.canTouchEfiVariables = false;

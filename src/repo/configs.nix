@@ -5,8 +5,9 @@
   inherit (inputs) localLib;
 
   cfg = inputs.std.lib.cfg // localLib.cfg;
+  inherit (inputs.std.lib.dev) mkNixago;
 in {
-  editorconfig = cfg.editorconfig {
+  editorconfig = (mkNixago cfg.editorconfig) {
     data = {
       root = true;
 
@@ -43,7 +44,7 @@ in {
   };
 
   # Tool Homepage: https://numtide.github.io/treefmt/
-  treefmt = cfg.treefmt {
+  treefmt = (mkNixago cfg.treefmt) {
     packages = [
       inputs.nixpkgs.nodePackages.prettier
       inputs.nixpkgs.nodePackages.prettier-plugin-toml
@@ -84,7 +85,7 @@ in {
     };
   };
 
-  vscode-settings = cfg.vscode-settings {
+  vscode-settings = (mkNixago cfg.vscode-settings) {
     data = {
       "nix.enableLanguageServer" = true;
       "nix.serverPath" = "nil";
@@ -99,7 +100,7 @@ in {
   };
 
   # Tool Homepage: https://github.com/evilmartians/lefthook
-  lefthook = cfg.lefthook {
+  lefthook = (mkNixago cfg.lefthook) {
     data = {
       commit-msg = {
         commands = {
@@ -132,7 +133,7 @@ in {
   };
 
   # Tool Homepage: https://rust-lang.github.io/mdBook/
-  mdbook = cfg.mdbook {
+  mdbook = (mkNixago cfg.mdbook) {
     # add preprocessor packages here
     packages = [
       inputs.nixpkgs.mdbook-linkcheck

@@ -1,13 +1,10 @@
 {
   inputs,
   cell,
-}: {
-  pkgs,
-  lib,
   config,
   options,
-  ...
 }: let
+  inherit (inputs.nixpkgs) lib;
   inherit (lib) types;
   inherit (inputs.localLib) helpers;
   l = lib // builtins;

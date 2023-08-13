@@ -1,15 +1,12 @@
 {
   inputs,
   cell,
-}: {
-  pkgs,
-  lib,
   config,
-  ...
+  options,
 }: {
   environment.systemPackages = builtins.attrValues {
     inherit
-      (pkgs)
+      (inputs.nixpkgs)
       coreutils
       dnsutils
       iputils

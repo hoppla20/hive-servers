@@ -1,15 +1,12 @@
 {
   inputs,
   cell,
-}: {
-  pkgs,
-  lib,
   config,
-  ...
+  options,
 }: {
   nix = {
     nixPath = [
-      "nixpkgs=${pkgs.path}"
+      "nixpkgs=${inputs.nixpkgs.path}"
     ];
     settings = {
       sandbox = true;
@@ -23,6 +20,8 @@
       experimental-features = nix-command flakes
       min-free = 5368709120
       fallback = true
+      keep-outputs = true
+      keep-derivations = true
     '';
   };
 }

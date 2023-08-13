@@ -4,11 +4,8 @@
 }: {
   core = {
     imports =
-      # core
-      builtins.attrValues inputs.nixosModules.core
-      ++ builtins.attrValues inputs.nixosProfiles.core
       # users
-      ++ builtins.attrValues inputs.nixosModules.users
+      builtins.attrValues inputs.nixosModules.users
       # test
       ++ builtins.attrValues cell.nixosModules
       ++ builtins.attrValues cell.nixosProfiles;
@@ -21,7 +18,6 @@
 
     hoppla = {
       core = {
-        enable = true;
         hostName = "test";
       };
       users.vincentcui.enable = true;

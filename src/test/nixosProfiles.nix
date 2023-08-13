@@ -2,7 +2,7 @@
   inputs,
   cell,
 }:
-inputs.localLib.helpers.load {
+inputs.localLib.helpers.loadModules {
   inherit inputs cell;
   src = ./nixosProfiles;
 }

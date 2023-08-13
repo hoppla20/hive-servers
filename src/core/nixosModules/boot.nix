@@ -1,13 +1,11 @@
 {
   inputs,
   cell,
-}: {
-  lib,
   config,
-  ...
+  options,
 }: let
   inherit (inputs.localLib) helpers;
-  l = lib // builtins;
+  l = inputs.nixpkgs.lib // builtins;
 
   cfg = config.hoppla.core;
 in {

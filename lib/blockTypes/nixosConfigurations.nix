@@ -8,12 +8,12 @@ in {
   name = "nixosConfigurations";
   type = "nixosConfigurations";
   actions = {
+    inputs,
     currentSystem,
     fragment,
     fragmentRelPath,
     target,
   }: let
-    pkgs = inputs.nixpkgs.legacyPackages.${currentSystem};
     fragments = l.splitString "\/" fragmentRelPath;
     cellName = l.elemAt fragments 0;
     targetName = l.elemAt fragments 2;
@@ -31,7 +31,7 @@ in {
       currentSystem
       "runTestVm"
       "create and run a test vm using this configuration"
-      [pkgs.nix-output-monitor]
+      [inputs.nixpkgs.nix-output-monitor]
       ''
         # fragment: ${fragment}
 
@@ -45,7 +45,7 @@ in {
       currentSystem
       "runTestVmGrub"
       "create and run a test vm (with grub) using this configuration"
-      [pkgs.nix-output-monitor]
+      [inputs.nixpkgs.nix-output-monitor]
       ''
         # fragment: ${fragment}
 
@@ -73,7 +73,7 @@ in {
       currentSystem
       "showHopplaConfig"
       "Outputs a JSON with all hoppla module configurations"
-      [inputs.nixpkgs.legacyPackages.${currentSystem}.jq]
+      [inputs.nixpkgs.jq]
       ''
         # fragment: ${fragment}
 

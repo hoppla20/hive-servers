@@ -35,10 +35,5 @@ Outputs:
   inherit (inputs.nixpkgs) lib;
 
   l = lib // builtins;
-
-  cells = l.head (
-    l.attrValues
-    (l.getAttrs l.systems.doubles.all flakeRoot) # avoid infinite recursion
-  );
 in
-  l.mapAttrs (cell: l.attrByPath [blockName] {}) cells
+  l.mapAttrs (system: l.mapAttrs (cell: l.attrByPath [blockName] {})) flakeRoot

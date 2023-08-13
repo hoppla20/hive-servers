@@ -3,16 +3,12 @@
   cell,
 }: {
   imports =
-    # core
-    builtins.attrValues inputs.nixosModules.core
-    ++ builtins.attrValues inputs.nixosProfiles.core
     # users
-    ++ builtins.attrValues inputs.nixosModules.users
+    builtins.attrValues inputs.nixosModules.users
     # test
     ++ builtins.attrValues inputs.nixosModules.test
-    ++ builtins.attrValues inputs.nixosProfiles.test
     # nextcloud
-    ++ [cell.nixosModules.nextcloud];
+    ++ [cell.nixosProfiles.nextcloud-test];
 
   bee = {
     system = "x86_64-linux";
@@ -21,10 +17,6 @@
   };
 
   hoppla = {
-    core = {
-      enable = true;
-      hostName = "nextcloud-test";
-    };
     users.vincentcui.enable = true;
     test = {
       enable = true;
@@ -40,36 +32,12 @@
         ];
       };
     };
-    services = {
-      nextcloud = {
-        enable = true;
-        hostName = "localhost:8080";
-        adminpassFile = "/secrets/nextcloudAdminpass";
-        database = {
-          type = "pgsql";
-          local = true;
-        };
+    services.nextcloud = {
+      database = {
+        local = true;
       };
-    };
-  };
-
-  # use sops-nix in production
-  system.activationScripts = {
-    prepareSecrets.text = ''
-      #!/usr/bin/env bash
-      mkdir -p /secrets
-      chown root:root /secrets
-      chmod 0755 /secrets
-    '';
-
-    nextcloudAdminpass = {
-      text = ''
-        #!/usr/bin/env bash
-        echo "admin" > /secrets/nextcloudAdminpass
-        chown nextcloud:nextcloud /secrets/nextcloudAdminpass
-        chmod 0400 /secrets/nextcloudAdminpass
-      '';
-      deps = ["prepareSecrets"];
+      extraHostNames = ["localhost:8080"];
+      trustedProxies = ["::1"];
     };
   };
 }

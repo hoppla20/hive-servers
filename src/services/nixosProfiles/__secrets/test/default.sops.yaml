@@ -1,0 +1,35 @@
+services:
+  nextcloud:
+    adminpass: ENC[AES256_GCM,data:Kt/0QNY=,iv:Kbng7DE7M9ETe/2XrOVapuyaII2wsftmnuQm5iC5gPA=,tag:RZe743s+ht9fI9MdXQD/IQ==,type:str]
+    dbpass: ENC[AES256_GCM,data:sALz9FmzbQmZ,iv:/cwMC4pzQZl+Ff4//rFG/pOGgJ/SJM5ZilAKAVQWGFQ=,tag:ogjyNJMFsb7AEqx3e/SOCQ==,type:str]
+sops:
+  kms: []
+  gcp_kms: []
+  azure_kv: []
+  hc_vault: []
+  age:
+    - recipient: age1e5u8zssrm7uyctrhecmnjv0kxy8tg69zzmlc9rwkwyl2sjqawpqqa0ydqp
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBkV3RYbTd0MUxEQWVZaWsw
+        WHIrQmFMVXNJRUp6MngrYmtSc1hRWE1GNm13Cit6VmlhVDh3MGExa1RPOHVHa1Bw
+        SzlWWlY4NUlrTFVwUUJ0ZzUvR2Zya0UKLS0tIFpjOVlETHBaT216QWJQTmNqWmlP
+        M0wyZW5IVVJ1TGNWMHczRUo4ZHBIVGMKp/2zXAFNHacLY5B4of0zDNvq53iLR0N6
+        CULvktKw7PL8pZ6KYH805jv3I8klelrKw7/TAxHI+qrRHQWxSiOacQ==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2023-08-12T18:49:03Z"
+  mac: ENC[AES256_GCM,data:q7egYehqhz6snblUAZnDO2G3W+Xlk5zuGzn9BxvUGcS244qqfIg/ZxkwXL9e2D2fUMMhbAjQWHSA/C0WBXd/P2zgJv+DTso6d+2PX35XetHXsGgqYtyBmLjcigz/3o3LYfazDO7yRLWPPhgy6Jf9/d0adzLtQOfAA6oSZNieAuA=,iv:xgLXLWKVOMrQLy3Bb4PhZiV38JJ6nPo1S3rMgVWFh9Y=,tag:cPAXq/tqQU0dssV7yV0M1Q==,type:str]
+  pgp:
+    - created_at: "2023-08-13T10:37:27Z"
+      enc: |-
+        -----BEGIN PGP MESSAGE-----
+
+        wV4DPzznJZi2loMSAQdAMGBjI8c1ElkXMcQyXHCY1NmH/683Fz0KH1TCuuH/BxYw
+        I5uwOzTmGS+Bmn9csOKftTCeBVnqn/+viNUJZj5tWgLyGzmpV/QDaRUdU8SBmxih
+        0lEBrK7bSndORvc3UbTcG7Y3AERks0b/gQUIocl9btViK+Xp0z8g4sDISEwCDPXn
+        yWBAVIsHrQ6fwOqyy8b0355lMER14B6xkNp2dEZfqkytjcg=
+        =eOd6
+        -----END PGP MESSAGE-----
+      fp: 1683D65613F804725B92DA80CB06AC715E3F8472
+  unencrypted_suffix: _unencrypted
+  version: 3.7.3

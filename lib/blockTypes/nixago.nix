@@ -11,6 +11,7 @@ in
     inherit name;
     type = "nixago";
     actions = {
+      inputs,
       currentSystem,
       fragment,
       fragmentRelPath,

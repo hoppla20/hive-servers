@@ -1,2 +1,16 @@
+keys:
+  gpg:
+    - &nitrokey 1683 D656 13F8 0472 5B92  DA80 CB06 AC71 5E3F 8472
+  age:
+    - &test age1e5u8zssrm7uyctrhecmnjv0kxy8tg69zzmlc9rwkwyl2sjqawpqqa0ydqp
 creation_rules:
-  - pgp: 1683 D656 13F8 0472 5B92  DA80 CB06 AC71 5E3F 8472
+  - path_regex: .*/test/[^/]+\.sops\.(yaml|json|env|ini)$
+    key_groups:
+      - pgp:
+          - *nitrokey
+        age:
+          - *test
+  - path_regex: .*/production/[^/]+\.sops\.(yaml|json|env|ini)$
+    key_groups:
+      - pgp:
+          - *nitrokey

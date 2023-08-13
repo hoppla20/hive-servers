@@ -1,16 +1,13 @@
 {
   inputs,
   cell,
-  localLib,
-}: {
-  lib,
   config,
   options,
-  ...
 }: let
-  l = lib // builtins;
+  inherit (inputs.nixpkgs) lib;
   inherit (lib) types;
-  inherit (localLib) helpers;
+  inherit (inputs.localLib) helpers;
+  l = lib // builtins;
 
   cfg = config.hoppla.test;
 in {
@@ -18,6 +15,7 @@ in {
 
   options.hoppla.test.vm = {
     enable = helpers.mkEnableOption cfg.enable;
+
     cores = l.mkOption {
       type = types.ints.unsigned;
       default = 1;

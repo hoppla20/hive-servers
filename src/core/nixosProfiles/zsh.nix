@@ -1,11 +1,8 @@
 {
   inputs,
   cell,
-}: {
-  pkgs,
-  lib,
   config,
-  ...
+  options,
 }: {
   programs = {
     zsh = {
@@ -17,7 +14,7 @@
     starship.enable = true;
   };
 
-  users.defaultUserShell = pkgs.zsh;
+  users.defaultUserShell = inputs.nixpkgs.zsh;
 
   environment.pathsToLink = ["/share/zsh"];
 }
