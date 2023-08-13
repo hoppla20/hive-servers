@@ -3,7 +3,9 @@
   cell,
   config,
   options,
-}: {
+}: let
+  inherit (inputs.nixpkgs) lib;
+in {
   imports = [inputs.sops-nix.nixosModules.sops];
 
   environment.systemPackages = builtins.attrValues {
@@ -16,6 +18,14 @@
   };
 
   sops = {
-    age.sshKeyPaths = inputs.nixpkgs.lib.mkDefault ["/etc/ssh/ssh_host_ed25519_key"];
+    age = {
+      generateKey = lib.mkDefault false;
+      keyFile = lib.mkDefault null;
+      sshKeyPaths = lib.mkDefault [];
+    };
+    gnupg = {
+      home = lib.mkDefault null;
+      sshKeyPaths = lib.mkDefault [];
+    };
   };
 }

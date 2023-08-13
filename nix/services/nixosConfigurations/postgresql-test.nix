@@ -19,8 +19,8 @@
     core.hostName = "postgresql";
     users.vincentcui.enable = true;
     test = {
-      enable = true;
-      vm = {
+      nixos-generators = {
+        enable = true;
         cores = 2;
         memory = 2048;
         forwardPorts = [

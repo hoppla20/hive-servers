@@ -19,8 +19,8 @@
     core.hostName = "nextcloud";
     users.vincentcui.enable = true;
     test = {
-      enable = true;
-      vm = {
+      nixos-generators = {
+        enable = true;
         cores = 4;
         memory = 4096;
         forwardPorts = [

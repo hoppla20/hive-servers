@@ -32,8 +32,8 @@ in {
 
   config = l.mkIf (cfg.enable && cfg.networking.enable) {
     networking = {
-      networkmanager.enable = true;
       inherit (cfg.networking) hostId timeServers;
+      firewall.enable = true;
     };
   };
 }

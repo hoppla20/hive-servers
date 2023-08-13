@@ -43,11 +43,7 @@ in {
           users = ["vincentcui"];
           commands = [
             {
-              command = "${inputs.nixpkgs.nixos-rebuild}/bin/nixos-rebuild";
-              options = ["SETENV" "NOPASSWD"];
-            }
-            {
-              command = "/nix/var/nix/profiles/system/specialisation/*/bin/switch-to-configuration";
+              command = "ALL";
               options = ["SETENV" "NOPASSWD"];
             }
           ];

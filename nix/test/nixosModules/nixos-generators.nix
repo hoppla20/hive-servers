@@ -61,6 +61,9 @@ in {
         formatConfigs = {
           vm = {config, ...}: shared // {};
           vm-bootloader = {config, ...}: shared // {};
+          qcow = {config, ...}: {
+            services.qemuGuest.enable = true;
+          };
         };
       }
     )

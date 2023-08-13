@@ -10,7 +10,7 @@
   } @ inputs: let
     l = inputs.unstable.lib // builtins;
 
-    lib = inputs.haumea.lib.load {
+    localLib = inputs.haumea.lib.load {
       src = ./lib;
       loader = inputs.haumea.lib.loaders.scoped;
       transformer = [inputs.haumea.lib.transformers.liftDefault];
@@ -25,11 +25,11 @@
       "aarch64-linux"
     ];
 
-    blockTypes = l.attrsets.mergeAttrsList [std.blockTypes hive.blockTypes lib.blockTypes];
+    blockTypes = l.attrsets.mergeAttrsList [std.blockTypes hive.blockTypes localLib.blockTypes];
 
     output = {
-      nixosModules = lib.helpers.pickAllByBlockName self "nixosModules";
-      nixosProfiles = lib.helpers.pickAllByBlockName self "nixosProfiles";
+      nixosModules = localLib.helpers.pickAllByBlockName self "nixosModules";
+      nixosProfiles = localLib.helpers.pickAllByBlockName self "nixosProfiles";
       nixosConfigurations = hive.collect self "nixosConfigurations";
     };
   in
@@ -39,8 +39,8 @@
       inputs =
         inputs
         // {
+          inherit localLib;
           inherit (output) nixosModules nixosProfiles nixosConfigurations;
-          localLib = lib;
         };
       cellsFrom = ./nix;
       cellBlocks = with blockTypes; [
@@ -60,7 +60,7 @@
       ];
     }
     {
-      inherit lib nixpkgsConfig systems blockTypes;
+      inherit localLib nixpkgsConfig systems blockTypes;
       inherit (output) nixosModules nixosProfiles nixosConfigurations;
       apps = l.mapAttrs (_: shell: {default = shell.flakeApp;}) (hive.harvest self ["repo" "shells" "default"]);
       growOn = args:
@@ -78,9 +78,11 @@
     extra-experimental-features = "nix-command flakes";
     extra-substituters = [
       "https://nix-community.cachix.org"
+      "https://colmena.cachix.org"
     ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "colmena.cachix.org-1:7BzpDnjjH8ki2CT3f6GdOk7QAzPOl+1t3LvTLXqYcSg="
     ];
   };
 
@@ -111,6 +113,7 @@
         nixpkgs.follows = "nixpkgs";
         haumea.follows = "haumea";
         paisano.follows = "paisano";
+        colmena.follows = "colmena";
       };
     };
     std = {
@@ -150,6 +153,13 @@
     terraform-providers-bin = {
       url = "github:nix-community/nixpkgs-terraform-providers-bin";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    colmena = {
+      url = "github:zhaofengli/colmena";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        stable.follows = "nixpkgs";
+      };
     };
     home-manager = {
       url = "github:nix-community/home-manager/release-23.05";

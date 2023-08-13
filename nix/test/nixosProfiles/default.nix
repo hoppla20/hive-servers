@@ -10,7 +10,11 @@
     ++ builtins.attrValues inputs.nixosProfiles.core;
 
   hoppla = {
-    core.enable = true;
+    core = {
+      enable = true;
+      vm.enable = true;
+      ssh.enable = true;
+    };
   };
 
   sops.age = {

@@ -22,12 +22,14 @@ blockName = "block1"
 
 Outputs:
 {
-  cell1 = {
-    target1 = "cell1-block1-target1";
-  };
-  cell2 = {
-    target1 = "cell2-block1-target1";
-    target2 = "cell2-block1-target2";
+  system1 = {
+    cell1 = {
+      target1 = "cell1-block1-target1";
+    };
+    cell2 = {
+      target1 = "cell2-block1-target1";
+      target2 = "cell2-block1-target2";
+    };
   };
 }
 */
@@ -36,4 +38,4 @@ Outputs:
 
   l = lib // builtins;
 in
-  l.mapAttrs (system: l.mapAttrs (cell: l.attrByPath [blockName] {})) flakeRoot
+  l.mapAttrs (system: l.mapAttrs (cell: l.attrByPath [blockName] {})) (l.getAttrs flakeRoot.systems flakeRoot)

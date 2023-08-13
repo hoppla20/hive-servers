@@ -22,6 +22,7 @@ in
         inputs.nixpkgs.conform
         inputs.nixos-generators.packages.default
         inputs.terranix.packages.default
+        inputs.colmena.packages.colmena
         terraform'
       ];
 
