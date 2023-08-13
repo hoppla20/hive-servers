@@ -38,7 +38,7 @@ in
       pkgs = inputs.nixpkgs.${currentSystem};
 
       repoFolder = with pkgs.lib;
-        concatStringsSep "/" (["./nix"] ++ (init (splitString "/" fragmentRelPath)));
+        concatStringsSep "/" (["./nix"] ++ splitString "/" fragmentRelPath);
 
       git = {
         inherit repo;
