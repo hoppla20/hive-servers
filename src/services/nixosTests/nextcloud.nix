@@ -3,7 +3,7 @@
   cell,
 }: let
   pkgs = inputs.nixpkgs;
-  l = inputs.nixpkgs.lib // builtins;
+  l = pkgs.lib // builtins;
 in {
   name = "nextcloud";
 
@@ -50,19 +50,6 @@ in {
           ];
         };
       };
-
-      services.postgresql = {
-        enable = true;
-        enableTCPIP = true;
-        initialScript = pkgs.writeText "db-init" ''
-          set password_encryption = 'md5';
-          create role nextcloud with login password 'nextcloud' createdb;
-          create database nextcloud;
-          grant all privileges on database nextcloud to nextcloud;
-        '';
-      };
-
-      networking.firewall.allowedTCPPorts = [5432];
     };
     nextcloud = {
       config,

@@ -103,6 +103,9 @@ in {
         # module
         ${l.concatStringsSep "\n" (l.map authToString cfg.authentication)}
       '';
+      initialScript = inputs.nixpkgs.writeText "db-init" ''
+        set password_encryption = 'scram-sha-256';
+      '';
     };
 
     systemd.services.postgresql-ensure-users = {
