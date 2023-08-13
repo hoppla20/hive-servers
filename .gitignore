@@ -2,6 +2,10 @@
 /result
 /build
 
+# vm state
+*.qcow2
+*.fd
+
 # prj-spec dirs
 # <https://github.com/numtide/prj-spec>
 .bin
