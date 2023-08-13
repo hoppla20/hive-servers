@@ -55,6 +55,7 @@
         nixosConfigurations
 
         # services
+        (containers "containers")
         (arion "arion")
       ];
     }
@@ -114,6 +115,7 @@
         devshell.follows = "devshell";
         arion.follows = "arion";
         nixago.follows = "nixago";
+        n2c.follows = "n2c";
       };
     };
     incl = {
@@ -129,6 +131,10 @@
 
     nixago = {
       url = "github:nix-community/nixago";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    n2c = {
+      url = "github:nlewo/nix2container";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
