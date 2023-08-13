@@ -42,7 +42,7 @@
           inherit (output) nixosModules nixosProfiles nixosConfigurations;
           localLib = lib;
         };
-      cellsFrom = ./src;
+      cellsFrom = ./nix;
       cellBlocks = with blockTypes; [
         # repo
         (nixago "configs")

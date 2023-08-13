@@ -33,10 +33,7 @@ in {
       "create and run a test vm using this configuration"
       [inputs.nixpkgs.nix-output-monitor]
       ''
-        # fragment: ${fragment}
-
         ${sharedRunTestVm}
-
         RESULT=$(nom build --no-link --print-out-paths "$PRJ_ROOT#nixosConfigurations.${collectedTargetName}.config.formats.vm")
         exec "$RESULT"
       ''
@@ -47,23 +44,31 @@ in {
       "create and run a test vm (with grub) using this configuration"
       [inputs.nixpkgs.nix-output-monitor]
       ''
-        # fragment: ${fragment}
-
         ${sharedRunTestVm}
-
         RESULT=$(nom build --no-link --print-out-paths "$PRJ_ROOT#nixosConfigurations.${collectedTargetName}.config.formats.vm-bootloader")
         exec "$RESULT"
       ''
       {})
     (mkCommand
       currentSystem
+      "buildDiskImage"
+      "builds disk image for configuration"
+      [inputs.nixpkgs.nix-output-monitor]
+      ''
+        ${sharedRunTestVm}
+        RESULT=$(nom build --no-link --print-out-paths "$PRJ_ROOT#nixosConfigurations.${collectedTargetName}.config.formats.qcow")
+        cp "$RESULT" "$NIX_DISK_IMAGE"
+      ''
+      {})
+    (mkCommand
+      currentSystem
       "buildToplevel"
       "build the toplevel of the configuration"
-      []
+      [inputs.nixpkgs.nix-output-monitor]
       ''
         # fragment: ${fragment}
 
-        nix build \
+        nom build \
           --show-trace \
           --system "${target.bee.system}" \
           "$PRJ_ROOT#nixosConfigurations.${collectedTargetName}.config.system.build.toplevel"
@@ -72,7 +77,7 @@ in {
     (mkCommand
       currentSystem
       "showHopplaConfig"
-      "Outputs a JSON with all hoppla module configurations"
+      "outputs a JSON with all hoppla module configurations"
       [inputs.nixpkgs.jq]
       ''
         # fragment: ${fragment}

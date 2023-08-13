@@ -11,7 +11,17 @@
 in {
   options.hoppla.core.boot = {
     enable = helpers.mkEnableOption cfg.enable;
-    grub.enable = helpers.mkEnableOption cfg.boot.enable;
+    grub = {
+      enable = helpers.mkEnableOption cfg.boot.enable;
+      efi = helpers.mkEnableOption true;
+      device = l.mkOption {
+        type = l.types.str;
+        default =
+          if cfg.boot.grub.efi
+          then "nodev"
+          else "/dev/disk/by-label/BOOT";
+      };
+    };
   };
 
   config = l.mkIf (cfg.enable && cfg.boot.enable) {
@@ -19,9 +29,9 @@ in {
       efi.canTouchEfiVariables = l.mkDefault true;
       grub = l.mkIf cfg.boot.grub.enable {
         enable = true;
-        efiSupport = true;
+        efiSupport = cfg.boot.grub.efi;
         efiInstallAsRemovable = l.mkDefault false;
-        device = "nodev";
+        inherit (cfg.boot.grub) device;
       };
     };
   };
