@@ -9,7 +9,6 @@
     ++ [cell.nixosModules.nextcloud];
 
   hoppla = {
-    core.hostName = "nextcloud";
     services.nextcloud = {
       enable = true;
       hostName = "nextcloud";

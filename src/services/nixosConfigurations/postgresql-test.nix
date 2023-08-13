@@ -7,8 +7,8 @@
     builtins.attrValues inputs.nixosModules.users
     # test
     ++ builtins.attrValues inputs.nixosModules.test
-    # nextcloud
-    ++ [cell.nixosProfiles.nextcloud-test];
+    # postgresql
+    ++ [cell.nixosProfiles.postgresql-test];
 
   bee = {
     system = "x86_64-linux";
@@ -16,28 +16,21 @@
   };
 
   hoppla = {
-    core.hostName = "nextcloud";
+    core.hostName = "postgresql";
     users.vincentcui.enable = true;
     test = {
       enable = true;
       vm = {
-        cores = 4;
-        memory = 4096;
+        cores = 2;
+        memory = 2048;
         forwardPorts = [
           {
             proto = "tcp";
-            host.port = 8080;
-            guest.port = 80;
+            host.port = 5432;
+            guest.port = 5432;
           }
         ];
       };
-    };
-    services.nextcloud = {
-      database = {
-        local = true;
-      };
-      extraHostNames = ["localhost:8080"];
-      trustedProxies = ["::1"];
     };
   };
 }

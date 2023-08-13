@@ -3,6 +3,7 @@
   cell,
 }: let
   pkgs = inputs.nixpkgs;
+  l = inputs.nixpkgs.lib // builtins;
 in {
   name = "nextcloud";
 
@@ -17,8 +18,8 @@ in {
 
   nodes = {
     db = {
-      pkgs,
       config,
+      options,
       ...
     }: {
       virtualisation = {
@@ -26,21 +27,33 @@ in {
         memorySize = 2048;
       };
 
-      imports = builtins.attrValues inputs.nixosProfiles.test;
+      imports = [cell.nixosProfiles.postgresql-test];
 
       hoppla = {
-        core.hostName = "db";
+        core.hostName = "postgresql";
+        services.postgresql = {
+          authentication = [
+            {
+              database = "all";
+              user = "all";
+              address = "192.168.1.0/24";
+              auth-method = "scram-sha-256";
+            }
+          ];
+          ensureUsers = l.mkForce [
+            {
+              name = "nextcloud";
+              createDb = true;
+              createUserDb = true;
+              passwordFile = "/run/secrets/services/nextcloud/dbpass";
+            }
+          ];
+        };
       };
 
       services.postgresql = {
         enable = true;
         enableTCPIP = true;
-        port = 5432;
-        authentication = ''
-          #type database dbuser address        auth-method
-          host  all      all    10.0.2.0/24    md5
-          host  all      all    192.168.1.0/24 md5
-        '';
         initialScript = pkgs.writeText "db-init" ''
           set password_encryption = 'md5';
           create role nextcloud with login password 'nextcloud' createdb;
@@ -52,8 +65,8 @@ in {
       networking.firewall.allowedTCPPorts = [5432];
     };
     nextcloud = {
-      pkgs,
       config,
+      options,
       ...
     }: {
       imports = [cell.nixosProfiles.nextcloud-test];
@@ -64,9 +77,10 @@ in {
       };
 
       hoppla = {
+        core.hostName = "nextcloud";
         services.nextcloud = {
           database = {
-            host = "db";
+            host = "postgresql";
             port = 5432;
             passFile = "/run/secrets/services/nextcloud/dbpass";
           };
@@ -90,14 +104,14 @@ in {
       echo 'hi' | ${pkgs.rclone}/bin/rclone rcat nextcloud:test-shared-file
     '';
   in ''
-    db.start()
-    db.wait_for_unit("multi-user.target")
+    postgresql.start()
+    postgresql.wait_for_unit("multi-user.target")
 
     nextcloud.start()
     nextcloud.wait_for_unit("multi-user.target")
 
     # for interactive testing
-    db.forward_port(guest_port=5432,host_port=5432)
+    postgresql.forward_port(guest_port=5432,host_port=5432)
     nextcloud.forward_port(guest_port=80,host_port=8080)
 
     nextcloud.succeed("curl -sSf http://nextcloud/login")
