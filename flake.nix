@@ -20,6 +20,10 @@
     nixpkgsConfig = {
       allowUnfree = true;
     };
+    systems = [
+      "x86_64-linux"
+      "aarch64-linux"
+    ];
 
     blockTypes = l.attrsets.mergeAttrsList [std.blockTypes hive.blockTypes lib.blockTypes];
 
@@ -31,11 +35,7 @@
   in
     hive.growOn
     {
-      inherit nixpkgsConfig;
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-      ];
+      inherit nixpkgsConfig systems;
       inputs =
         inputs
         // {
@@ -60,9 +60,14 @@
       ];
     }
     {
-      inherit lib;
+      inherit lib nixpkgsConfig systems blockTypes;
       inherit (output) nixosModules nixosProfiles nixosConfigurations;
       apps = l.mapAttrs (_: shell: {default = shell.flakeApp;}) (hive.harvest self ["repo" "shells" "default"]);
+      growOn = args:
+        hive.growOn ({
+            inherit nixpkgsConfig systems;
+          }
+          // args);
     };
 
   /*
@@ -116,6 +121,7 @@
         arion.follows = "arion";
         nixago.follows = "nixago";
         n2c.follows = "n2c";
+        terranix.follows = "terranix";
       };
     };
     incl = {
@@ -135,6 +141,10 @@
     };
     n2c = {
       url = "github:nlewo/nix2container";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    terranix = {
+      url = "github:terranix/terranix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {

@@ -22,7 +22,7 @@ in
         ''
         {})
       (mkCommand currentSystem "explore" "interactively explore the nixago file" [] ''
-          ${inputs.nixpkgs.legacyPackages.${currentSystem}.bat}/bin/bat "${target.configFile}"
+          ${inputs.nixpkgs.bat}/bin/bat "${target.configFile}"
         ''
         {})
     ];

@@ -15,6 +15,8 @@ in
         inputs.nixpkgs.nil
         inputs.nixpkgs.alejandra
         inputs.nixos-generators.packages.default
+        inputs.nixpkgs.terraform
+        inputs.terranix.packages.default
       ];
 
       commands = [
