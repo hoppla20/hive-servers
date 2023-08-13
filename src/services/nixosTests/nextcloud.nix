@@ -10,10 +10,7 @@ in {
   extraPythonPackages = p: [p.psycopg2];
 
   defaults = {
-    virtualisation = {
-      qemu.guestAgent.enable = true;
-      graphics = false;
-    };
+    virtualisation.graphics = false;
   };
 
   nodes = {

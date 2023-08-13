@@ -13,7 +13,7 @@
 in {
   imports = [inputs.nixos-generators.nixosModules.all-formats];
 
-  options.hoppla.test.vm = {
+  options.hoppla.test.nixos-generators = {
     enable = helpers.mkEnableOption cfg.enable;
 
     cores = l.mkOption {
@@ -51,12 +51,10 @@ in {
       let
         shared = {
           virtualisation = {
-            inherit (cfg.vm) cores diskSize useEFIBoot resolution forwardPorts;
-            memorySize = cfg.vm.memory;
-            graphics = !cfg.vm.headless;
-            qemu = {
-              guestAgent.enable = true;
-            };
+            inherit (cfg.nixos-generators) cores diskSize useEFIBoot resolution forwardPorts;
+            memorySize = cfg.nixos-generators.memory;
+            graphics = !cfg.nixos-generators.headless;
+            qemu.guestAgent.enable = true;
           };
         };
       in {

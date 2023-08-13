@@ -4,6 +4,11 @@
 }: let
   l = inputs.nixpkgs.lib // builtins;
   stdLib = inputs.std.lib;
+
+  terraform' = inputs.nixpkgs.terraform.withPlugins (_: [
+    inputs.terraform-providers-bin.legacyPackages.providers.dmacvicar.libvirt
+    inputs.terraform-providers-bin.legacyPackages.providers.Telmate.proxmox
+  ]);
 in
   l.mapAttrs (_: inputs.std.lib.dev.mkShell) {
     default = {
@@ -14,9 +19,10 @@ in
       packages = [
         inputs.nixpkgs.nil
         inputs.nixpkgs.alejandra
+        inputs.nixpkgs.conform
         inputs.nixos-generators.packages.default
-        inputs.nixpkgs.terraform
         inputs.terranix.packages.default
+        terraform'
       ];
 
       commands = [

@@ -7,8 +7,8 @@
       # users
       builtins.attrValues inputs.nixosModules.users
       # test
-      ++ builtins.attrValues cell.nixosModules
-      ++ builtins.attrValues cell.nixosProfiles;
+      ++ builtins.attrValues cell.nixosProfiles
+      ++ builtins.attrValues cell.nixosModules;
 
     bee = {
       system = "x86_64-linux";
@@ -21,9 +21,9 @@
         hostName = "test";
       };
       users.vincentcui.enable = true;
-      test = {
+      test.nixos-generators = {
         enable = true;
-        vm.memory = 2048;
+        memory = 2048;
       };
     };
   };
