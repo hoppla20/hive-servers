@@ -1,4 +1,7 @@
-{inputs}: let
+{
+  inputs,
+  cell,
+}: let
   repoUrl = "registry.vincentcui.de:443/server/hive-servers";
 in
   inputs.nixpkgs.lib.mapAttrs
