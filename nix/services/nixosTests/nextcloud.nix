@@ -76,11 +76,12 @@ in {
   testScript = let
     withRcloneEnv = pkgs.writeScript "with-rclone-env" ''
       #!${pkgs.runtimeShell}
+      ADMIN_PASS="$(cat /run/secrets/services/nextcloud/adminpass)"
       export RCLONE_CONFIG_NEXTCLOUD_TYPE=webdav
       export RCLONE_CONFIG_NEXTCLOUD_URL="http://nextcloud/remote.php/webdav/"
       export RCLONE_CONFIG_NEXTCLOUD_VENDOR="nextcloud"
       export RCLONE_CONFIG_NEXTCLOUD_USER="admin"
-      export RCLONE_CONFIG_NEXTCLOUD_PASS="$(${pkgs.rclone}/bin/rclone obscure admin)"
+      export RCLONE_CONFIG_NEXTCLOUD_PASS="$(${pkgs.rclone}/bin/rclone obscure "$ADMIN_PASS")"
       "''${@}"
     '';
     copyFile = pkgs.writeScript "copy-shared-file" ''
