@@ -26,22 +26,11 @@
     ];
 
     blockTypes = l.attrsets.mergeAttrsList [std.blockTypes hive.blockTypes localLib.blockTypes];
-
-    output = {
-      nixosModules = localLib.helpers.pickAllByBlockName self "nixosModules";
-      nixosProfiles = localLib.helpers.pickAllByBlockName self "nixosProfiles";
-      nixosConfigurations = hive.collect self "nixosConfigurations";
-    };
   in
     hive.growOn
     {
       inherit nixpkgsConfig systems;
-      inputs =
-        inputs
-        // {
-          inherit localLib;
-          inherit (output) nixosModules nixosProfiles nixosConfigurations;
-        };
+      inputs = inputs // {inherit localLib;};
       cellsFrom = ./nix;
       cellBlocks = with blockTypes; [
         # repo
@@ -60,16 +49,16 @@
       ];
     }
     {
-      inherit localLib nixpkgsConfig systems blockTypes;
-      inherit (output) nixosModules nixosProfiles nixosConfigurations;
       apps = l.mapAttrs (_: shell: {default = shell.flakeApp;}) (hive.harvest self ["repo" "shells" "default"]);
+      nixosConfigurations = hive.collect self "nixosConfigurations";
+
+      lib = localLib;
       growOn = args:
         hive.growOn ({
             inherit nixpkgsConfig systems;
           }
           // args);
-    }
-    {
+
       checks = inputs.namaka.lib.load {
         src = ./tests;
         inputs = {
