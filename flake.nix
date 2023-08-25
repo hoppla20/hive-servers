@@ -68,6 +68,15 @@
             inherit nixpkgsConfig systems;
           }
           // args);
+    }
+    {
+      checks = inputs.namaka.lib.load {
+        src = ./tests;
+        inputs = {
+          inherit inputs;
+          flake = self;
+        };
+      };
     };
 
   /*
@@ -77,6 +86,7 @@
   nixConfig = {
     extra-experimental-features = "nix-command flakes";
     extra-substituters = [
+      "https://cache.nixos.org"
       "https://nix-community.cachix.org"
       "https://colmena.cachix.org"
     ];
@@ -106,6 +116,13 @@
     paisano = {
       url = "github:paisano-nix/core";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    namaka = {
+      url = "github:nix-community/namaka/v0.2.0";
+      inputs = {
+        haumea.follows = "haumea";
+        nixpkgs.follows = "nixpkgs";
+      };
     };
     hive = {
       url = "github:divnix/hive";

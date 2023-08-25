@@ -17,12 +17,12 @@ in
       imports = [inputs.std.std.devshellProfiles.default];
 
       packages = [
-        inputs.nixpkgs.nil
-        inputs.nixpkgs.alejandra
-        inputs.nixpkgs.conform
-        inputs.nixos-generators.packages.default
-        inputs.terranix.packages.default
-        inputs.colmena.packages.colmena
+        inputs.unstable.legacyPackages.nil
+        inputs.unstable.legacyPackages.alejandra
+        inputs.unstable.legacyPackages.nixos-generators
+        inputs.unstable.legacyPackages.terranix
+        inputs.unstable.legacyPackages.namaka
+        inputs.unstable.legacyPackages.colmena
         terraform'
       ];
 
@@ -43,7 +43,7 @@ in
       ];
 
       nixago = [
-        stdLib.cfg.conform
+        cell.configs.conform
         cell.configs.treefmt
         cell.configs.editorconfig
         cell.configs.lefthook

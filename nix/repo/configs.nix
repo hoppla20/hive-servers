@@ -7,6 +7,7 @@
   cfg = inputs.std.lib.cfg // localLib.cfg;
   inherit (inputs.std.lib.dev) mkNixago;
 in {
+  conform = mkNixago inputs.std.lib.cfg.conform;
   editorconfig = (mkNixago cfg.editorconfig) {
     data = {
       root = true;
