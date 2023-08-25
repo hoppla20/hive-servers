@@ -1,16 +1,6 @@
 #pretty
 {
   core = {
-    _profiles = {
-      nixos = {
-        core = {
-          enable = true;
-        };
-        test = {
-          enable = true;
-        };
-      };
-    };
     nixos = {
       core = {
         boot = {
@@ -32,8 +22,6 @@
             "3.de.pool.ntp.org"
           ];
         };
-        nix = { };
-        sops = { };
         ssh = {
           enable = true;
           ports = [
@@ -50,14 +38,11 @@
             url = "https://nix-community.cachix.org";
           }
         ];
-        utils = { };
         vm = {
           enable = true;
         };
-        zsh = { };
       };
       test = {
-        boot = { };
         enable = true;
         nixos-generators = {
           cores = 2;
@@ -78,6 +63,230 @@
         vincentcui = {
           enable = true;
         };
+      };
+    };
+    profiles = {
+      nixos = {
+        core = {
+          enable = true;
+        };
+        test = {
+          enable = true;
+        };
+      };
+    };
+  };
+  nextcloud = {
+    nixos = {
+      core = {
+        boot = {
+          enable = true;
+          grub = {
+            device = "nodev";
+            efi = true;
+          };
+        };
+        enable = true;
+        hostName = "nextcloud-test";
+        networking = {
+          enable = true;
+          hostId = "b4e48c52";
+          timeServers = [
+            "0.de.pool.ntp.org"
+            "1.de.pool.ntp.org"
+            "2.de.pool.ntp.org"
+            "3.de.pool.ntp.org"
+          ];
+        };
+        ssh = {
+          enable = true;
+          ports = [
+            22
+          ];
+        };
+        substituters = [
+          {
+            key = null;
+            url = "https://cache.nixos.org";
+          }
+          {
+            key = "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
+            url = "https://nix-community.cachix.org";
+          }
+        ];
+        vm = {
+          enable = true;
+        };
+      };
+      test = {
+        enable = true;
+        nixos-generators = {
+          cores = 2;
+          diskSize = 1024;
+          enable = true;
+          forwardPorts = [
+            {
+              guest = {
+                port = 80;
+              };
+              host = {
+                port = 8080;
+              };
+            }
+          ];
+          headless = false;
+          memory = 4096;
+          resolution = {
+            x = 1280;
+            y = 800;
+          };
+          useEFIBoot = true;
+        };
+      };
+      users = {
+        enable = true;
+        vincentcui = {
+          enable = true;
+        };
+      };
+    };
+    profiles = {
+      nixos = {
+        core = {
+          enable = true;
+        };
+        test = {
+          enable = true;
+        };
+      };
+    };
+    services = {
+      nextcloud = {
+        adminpassFile = "/run/secrets/services/nextcloud/adminpass";
+        database = {
+          host = "/run/postgresql";
+          local = true;
+          name = "nextcloud";
+          passFile = null;
+          port = null;
+          type = "pgsql";
+          user = "nextcloud";
+        };
+        enable = true;
+        extraHostNames = [
+          "localhost:8080"
+        ];
+        hostName = "nextcloud";
+        trustedProxies = [ ];
+      };
+    };
+  };
+  postgresql = {
+    nixos = {
+      core = {
+        boot = {
+          enable = true;
+          grub = {
+            device = "nodev";
+            efi = true;
+          };
+        };
+        enable = true;
+        hostName = "postgresql-test";
+        networking = {
+          enable = true;
+          hostId = "deedb28c";
+          timeServers = [
+            "0.de.pool.ntp.org"
+            "1.de.pool.ntp.org"
+            "2.de.pool.ntp.org"
+            "3.de.pool.ntp.org"
+          ];
+        };
+        ssh = {
+          enable = true;
+          ports = [
+            22
+          ];
+        };
+        substituters = [
+          {
+            key = null;
+            url = "https://cache.nixos.org";
+          }
+          {
+            key = "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
+            url = "https://nix-community.cachix.org";
+          }
+        ];
+        vm = {
+          enable = true;
+        };
+      };
+      test = {
+        enable = true;
+        nixos-generators = {
+          cores = 2;
+          diskSize = 1024;
+          enable = true;
+          forwardPorts = [
+            {
+              guest = {
+                port = 5432;
+              };
+              host = {
+                port = 5432;
+              };
+            }
+          ];
+          headless = false;
+          memory = 2048;
+          resolution = {
+            x = 1280;
+            y = 800;
+          };
+          useEFIBoot = true;
+        };
+      };
+      users = {
+        enable = true;
+        vincentcui = {
+          enable = true;
+        };
+      };
+    };
+    profiles = {
+      nixos = {
+        core = {
+          enable = true;
+        };
+        test = {
+          enable = true;
+        };
+      };
+    };
+    services = {
+      postgresql = {
+        authentication = [
+          {
+            address = "10.0.2.0/24";
+            auth-method = "scram-sha-256";
+            auth-options = null;
+            database = "all";
+            user = "all";
+          }
+        ];
+        enable = true;
+        ensureUsers = [
+          {
+            createDb = true;
+            createUserDb = true;
+            name = "test";
+            passwordFile = "/run/secrets/services/nextcloud/dbpass";
+            userDbName = "test";
+          }
+        ];
+        port = 5432;
       };
     };
   };
