@@ -1,0 +1,84 @@
+#pretty
+{
+  core = {
+    _profiles = {
+      nixos = {
+        core = {
+          enable = true;
+        };
+        test = {
+          enable = true;
+        };
+      };
+    };
+    nixos = {
+      core = {
+        boot = {
+          enable = true;
+          grub = {
+            device = "nodev";
+            efi = true;
+          };
+        };
+        enable = true;
+        hostName = "core-test";
+        networking = {
+          enable = true;
+          hostId = "5de756a9";
+          timeServers = [
+            "0.de.pool.ntp.org"
+            "1.de.pool.ntp.org"
+            "2.de.pool.ntp.org"
+            "3.de.pool.ntp.org"
+          ];
+        };
+        nix = { };
+        sops = { };
+        ssh = {
+          enable = true;
+          ports = [
+            22
+          ];
+        };
+        substituters = [
+          {
+            key = null;
+            url = "https://cache.nixos.org";
+          }
+          {
+            key = "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
+            url = "https://nix-community.cachix.org";
+          }
+        ];
+        utils = { };
+        vm = {
+          enable = true;
+        };
+        zsh = { };
+      };
+      test = {
+        boot = { };
+        enable = true;
+        nixos-generators = {
+          cores = 2;
+          diskSize = 1024;
+          enable = true;
+          forwardPorts = [ ];
+          headless = false;
+          memory = 2048;
+          resolution = {
+            x = 1280;
+            y = 800;
+          };
+          useEFIBoot = true;
+        };
+      };
+      users = {
+        enable = true;
+        vincentcui = {
+          enable = true;
+        };
+      };
+    };
+  };
+}
