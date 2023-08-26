@@ -20,7 +20,7 @@ in {
       memorySize = 2048;
     };
 
-    hoppla.nixos.users.vincentcui.enable = true;
+    hoppla.nixos.users."vincent.cui".enable = true;
 
     sops.defaultSopsFile = ../../__secrets/test/default.sops.yaml;
   };

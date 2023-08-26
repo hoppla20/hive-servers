@@ -16,7 +16,7 @@
   hoppla = {
     nixos = {
       core.hostName = "test-hydra";
-      users.vincentcui.enable = true;
+      users."vincent.cui".enable = true;
       test = {
         nixos-generators = {
           virtualisation = {

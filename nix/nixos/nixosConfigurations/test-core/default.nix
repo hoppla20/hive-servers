@@ -15,7 +15,7 @@
   hoppla = {
     nixos = {
       core.hostName = "core-test";
-      users.vincentcui.enable = true;
+      users."vincent.cui".enable = true;
       test = {
         nixos-generators = {
           virtualisation = {

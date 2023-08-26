@@ -13,7 +13,7 @@ in {
 
   config = l.mkIf selfCfg.enable (l.mkMerge [
     {
-      users.users.vincentcui = {
+      users.users."vincent.cui" = {
         uid = 1000;
         description = "Vincent Cui";
         isNormalUser = true;
@@ -37,7 +37,7 @@ in {
 
       security.sudo.extraRules = [
         {
-          users = ["vincentcui"];
+          users = ["vincent.cui"];
           commands = [
             {
               command = "ALL";

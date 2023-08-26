@@ -17,7 +17,7 @@
   hoppla = {
     nixos = {
       core.hostName = "test-postgresql";
-      users.vincentcui.enable = true;
+      users."vincent.cui".enable = true;
       test = {
         nixos-generators = {
           virtualisation = {
