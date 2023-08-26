@@ -1,7 +1,7 @@
 {
   "main": {
     "enabled": 1,
-    "visible": true,
+    "hidden": false,
     "name": "main",
     "description": "",
 
