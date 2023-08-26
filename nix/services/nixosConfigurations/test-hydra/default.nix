@@ -8,6 +8,7 @@
   };
 
   imports = [
+    cell.nixosModules.hydra
     inputs.cells.nixos.nixosModules.users
     inputs.cells.nixos.nixosProfiles.test
   ];
@@ -34,28 +35,33 @@
         };
       };
     };
+    services.hydra = {
+      ensureUsers = [
+        {
+          name = "vincent.cui";
+          passwordFile = "/run/secrets/services/hydra/users/vincent.cui/password";
+          roles = ["admin"];
+        }
+      ];
+      config = {
+        enable = true;
+        port = 3000;
+        hydraURL = "localhost:3000";
+        notificationSender = "hydra@localhost";
+        useSubstitutes = true;
+      };
+    };
   };
 
-  nix = {
-    settings.allowed-users = ["hydra"];
-    buildMachines = [
-      {
-        hostName = "localhost";
-        system = "x86_64-linux";
-        supportedFeatures = ["kvm" "nixos-test" "big-parallel" "benchmark"];
-        maxJobs = 4;
-      }
-    ];
+  sops = {
+    defaultSopsFile = ../../__secrets/test/default.sops.yaml;
+    secrets = {
+      "services/hydra/users/vincent.cui/password" = {
+        owner = "hydra";
+        group = "hydra";
+        mode = "0400";
+        restartUnits = ["hydra-ensure-users.service"];
+      };
+    };
   };
-
-  services.hydra = {
-    enable = true;
-    port = 3000;
-    hydraURL = "localhost:3000";
-    notificationSender = "hydra@localhost";
-    useSubstitutes = true;
-    buildMachinesFiles = ["/etc/nix/machines"];
-  };
-
-  networking.firewall.allowedTCPPorts = [3000];
 }
