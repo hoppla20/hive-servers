@@ -40,7 +40,7 @@ in {
     };
     localMaxJobs = l.mkOption {
       type = types.int;
-      default = 4;
+      default = 1;
     };
 
     config = l.mkOption {
