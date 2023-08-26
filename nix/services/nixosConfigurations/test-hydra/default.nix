@@ -30,8 +30,8 @@
               }
             ];
             diskSize = 10240;
-            useNixStoreImage = true;
             writableStore = true;
+            writableStoreUseTmpfs = false;
           };
         };
       };
