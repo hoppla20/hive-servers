@@ -13,7 +13,7 @@
     "nixexprinput": "",
     "nixexprpath": "",
 
-    "enable_dynamic_run_command": true,
+    "enable_dynamic_run_command": false,
     "enableemail": false,
     "emailoverride": "",
     "inputs": {}
