@@ -19,7 +19,7 @@ in {
     targetName = l.elemAt fragments 2;
     collectedTargetName = "${cellName}-${targetName}";
 
-    sharedRunTestVm = ''
+    sharedTestVm = ''
       set -x
       DATA_LOCATION="$PRJ_DATA_HOME/${fragmentRelPath}"
       export NIX_DISK_IMAGE="$DATA_LOCATION/nixos.qcow2"
@@ -29,11 +29,20 @@ in {
   in [
     (mkCommand
       currentSystem
+      "build"
+      "build the toplevel of the nixos configuration"
+      []
+      ''
+        nix build "$PRJ_ROOT#nixosConfigurations.${collectedTargetName}.config.system.build.toplevel"
+      ''
+      {})
+    (mkCommand
+      currentSystem
       "runTestVm"
       "create and run a test vm using this configuration"
       [inputs.nixpkgs.nix-output-monitor]
       ''
-        ${sharedRunTestVm}
+        ${sharedTestVm}
         RESULT=$(nom build --no-link --print-out-paths "$PRJ_ROOT#nixosConfigurations.${collectedTargetName}.config.formats.vm")
         exec "$RESULT"
       ''
@@ -44,7 +53,7 @@ in {
       "create and run a test vm (with grub) using this configuration"
       [inputs.nixpkgs.nix-output-monitor]
       ''
-        ${sharedRunTestVm}
+        ${sharedTestVm}
         RESULT=$(nom build --no-link --print-out-paths "$PRJ_ROOT#nixosConfigurations.${collectedTargetName}.config.formats.vm-bootloader")
         exec "$RESULT"
       ''
@@ -55,23 +64,9 @@ in {
       "builds disk image for configuration"
       [inputs.nixpkgs.nix-output-monitor]
       ''
-        ${sharedRunTestVm}
+        ${sharedTestVm}
         RESULT=$(nom build --no-link --print-out-paths "$PRJ_ROOT#nixosConfigurations.${collectedTargetName}.config.formats.qcow")
         cp "$RESULT" "$NIX_DISK_IMAGE"
-      ''
-      {})
-    (mkCommand
-      currentSystem
-      "buildToplevel"
-      "build the toplevel of the configuration"
-      [inputs.nixpkgs.nix-output-monitor]
-      ''
-        # fragment: ${fragment}
-
-        nom build \
-          --show-trace \
-          --system "${target.bee.system}" \
-          "$PRJ_ROOT#nixosConfigurations.${collectedTargetName}.config.system.build.toplevel"
       ''
       {})
     (mkCommand
@@ -80,8 +75,6 @@ in {
       "outputs a JSON with all hoppla module configurations"
       [inputs.nixpkgs.jq]
       ''
-        # fragment: ${fragment}
-
         nix eval --json "$PRJ_ROOT#nixosConfigurations.${collectedTargetName}.config.hoppla" | jq
       ''
       {})
