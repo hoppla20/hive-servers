@@ -33,9 +33,11 @@ Outputs:
   };
 }
 */
-{inputs}: flakeRoot: blockName: let
-  inherit (inputs.nixpkgs) lib;
+{inputs}: {
+  harvest = flakeRoot: blockName: let
+    inherit (inputs.nixpkgs) lib;
 
-  l = lib // builtins;
-in
-  l.mapAttrs (system: l.mapAttrs (cell: l.attrByPath [blockName] {})) (l.getAttrs flakeRoot.systems flakeRoot)
+    l = lib // builtins;
+  in
+    l.mapAttrs (_: cells: l.filterAttrs (_: v: v != {}) (l.mapAttrs (cell: l.attrByPath [blockName] {}) cells)) (l.filterAttrs (k: v: l.elem k l.systems.doubles.all) flakeRoot);
+}

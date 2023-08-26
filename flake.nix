@@ -38,8 +38,8 @@
         (devshells "shells")
 
         # nixos
-        ((functions "nixosModules") // {cli = false;})
-        ((functions "nixosProfiles") // {cli = false;})
+        ((anything "nixosModules") // {cli = false;})
+        ((anything "nixosProfiles") // {cli = false;})
         nixosTests
         nixosConfigurations
 
@@ -50,7 +50,10 @@
     }
     {
       apps = l.mapAttrs (_: shell: {default = shell.flakeApp;}) (hive.harvest self ["repo" "shells" "default"]);
+      packages = l.mapAttrs (_: shell: {inherit shell;}) (hive.harvest self ["repo" "shells" "default"]);
+
       nixosConfigurations = hive.collect self "nixosConfigurations";
+      nixosTests = localLib.helpers.byBlockName.harvest self "nixosTests";
 
       lib = localLib;
       growOn = args:
@@ -65,6 +68,12 @@
           inherit inputs;
           flake = self;
         };
+      };
+    }
+    {
+      hydraJobs = {
+        inherit (self) packages nixosTests;
+        nixosConfigurations = l.mapAttrs (_: target: target.config.system.build.toplevel) self.nixosConfigurations;
       };
     };
 
