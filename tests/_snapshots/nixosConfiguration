@@ -87,10 +87,10 @@
           };
         };
         enable = true;
-        hostName = "nextcloud-test";
+        hostName = "test-nextcloud";
         networking = {
           enable = true;
-          hostId = "b4e48c52";
+          hostId = "b73c7ec4";
           timeServers = [
             "0.de.pool.ntp.org"
             "1.de.pool.ntp.org"
@@ -135,7 +135,7 @@
             }
           ];
           headless = false;
-          memory = 4096;
+          memory = 2048;
           resolution = {
             x = 1280;
             y = 800;
@@ -192,10 +192,10 @@
           };
         };
         enable = true;
-        hostName = "postgresql-test";
+        hostName = "test-postgresql";
         networking = {
           enable = true;
-          hostId = "deedb28c";
+          hostId = "b3467a79";
           timeServers = [
             "0.de.pool.ntp.org"
             "1.de.pool.ntp.org"

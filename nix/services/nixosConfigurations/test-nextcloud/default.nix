@@ -15,12 +15,12 @@
 
   hoppla = {
     nixos = {
-      core.hostName = "nextcloud-test";
+      core.hostName = "test-nextcloud";
       users.vincentcui.enable = true;
       test = {
         nixos-generators = {
           cores = 2;
-          memory = 4096;
+          memory = 2048;
           forwardPorts = [
             {
               host.port = 8080;
