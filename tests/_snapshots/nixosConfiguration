@@ -45,17 +45,13 @@
       test = {
         enable = true;
         nixos-generators = {
-          cores = 2;
-          diskSize = 1024;
           enable = true;
-          forwardPorts = [ ];
-          headless = false;
-          memory = 2048;
-          resolution = {
-            x = 1280;
-            y = 800;
+          qemuGuestAgent = true;
+          virtualisation = {
+            cores = 2;
+            graphics = false;
+            memorySize = 2048;
           };
-          useEFIBoot = true;
         };
       };
       users = {
@@ -121,26 +117,23 @@
       test = {
         enable = true;
         nixos-generators = {
-          cores = 2;
-          diskSize = 1024;
           enable = true;
-          forwardPorts = [
-            {
-              guest = {
-                port = 80;
-              };
-              host = {
-                port = 8080;
-              };
-            }
-          ];
-          headless = false;
-          memory = 2048;
-          resolution = {
-            x = 1280;
-            y = 800;
+          qemuGuestAgent = true;
+          virtualisation = {
+            cores = 2;
+            forwardPorts = [
+              {
+                guest = {
+                  port = 80;
+                };
+                host = {
+                  port = 8080;
+                };
+              }
+            ];
+            graphics = false;
+            memorySize = 2048;
           };
-          useEFIBoot = true;
         };
       };
       users = {
@@ -226,26 +219,23 @@
       test = {
         enable = true;
         nixos-generators = {
-          cores = 2;
-          diskSize = 1024;
           enable = true;
-          forwardPorts = [
-            {
-              guest = {
-                port = 5432;
-              };
-              host = {
-                port = 5432;
-              };
-            }
-          ];
-          headless = false;
-          memory = 2048;
-          resolution = {
-            x = 1280;
-            y = 800;
+          qemuGuestAgent = true;
+          virtualisation = {
+            cores = 2;
+            forwardPorts = [
+              {
+                guest = {
+                  port = 5432;
+                };
+                host = {
+                  port = 5432;
+                };
+              }
+            ];
+            graphics = false;
+            memorySize = 2048;
           };
-          useEFIBoot = true;
         };
       };
       users = {

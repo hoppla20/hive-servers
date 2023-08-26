@@ -18,7 +18,6 @@ in {
     virtualisation = {
       cores = 2;
       memorySize = 2048;
-      graphics = false;
     };
 
     hoppla.nixos.users.vincentcui.enable = true;

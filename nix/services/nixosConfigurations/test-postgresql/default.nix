@@ -20,14 +20,17 @@
       users.vincentcui.enable = true;
       test = {
         nixos-generators = {
-          cores = 2;
-          memory = 2048;
-          forwardPorts = [
-            {
-              host.port = 5432;
-              guest.port = 5432;
-            }
-          ];
+          virtualisation = {
+            cores = 2;
+            memorySize = 2048;
+            graphics = false;
+            forwardPorts = [
+              {
+                host.port = 5432;
+                guest.port = 5432;
+              }
+            ];
+          };
         };
       };
     };

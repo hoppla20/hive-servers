@@ -16,51 +16,27 @@ in {
   options = {
     enable = helpers.mkEnableOption targetCfg.enable;
 
-    cores = l.mkOption {
-      type = types.ints.unsigned;
-      default = 1;
-    };
-    memory = l.mkOption {
-      type = types.ints.unsigned;
-      default = 1024;
-    };
-    diskSize = l.mkOption {
-      type = types.ints.unsigned;
-      default = 1024;
-    };
-    useEFIBoot = helpers.mkEnableOption true;
-    headless = helpers.mkEnableOption false;
-    resolution = {
-      x = l.mkOption {
-        type = types.ints.unsigned;
-        default = 1280;
-      };
-      y = l.mkOption {
-        type = types.ints.unsigned;
-        default = 800;
-      };
-    };
-    forwardPorts = l.mkOption {
-      type = types.listOf types.attrs;
-      default = [];
+    qemuGuestAgent = helpers.mkEnableOption true;
+    virtualisation = l.mkOption {
+      type = types.attrs;
+      default = {};
     };
   };
 
   config = let
     shared = {
-      virtualisation = {
-        inherit (selfCfg) cores diskSize useEFIBoot resolution forwardPorts;
-        memorySize = selfCfg.memory;
-        graphics = !selfCfg.headless;
-        qemu.guestAgent.enable = true;
-      };
+      virtualisation =
+        selfCfg.virtualisation
+        // {
+          qemu.guestAgent.enable = selfCfg.qemuGuestAgent;
+        };
     };
   in {
     formatConfigs = {
       vm = {config, ...}: shared // {};
       vm-bootloader = {config, ...}: shared // {};
       qcow = {config, ...}: {
-        services.qemuGuest.enable = true;
+        services.qemuGuest.enable = selfCfg.qemuGuestAgent;
       };
     };
   };

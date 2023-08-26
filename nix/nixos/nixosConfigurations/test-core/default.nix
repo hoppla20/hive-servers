@@ -18,8 +18,11 @@
       users.vincentcui.enable = true;
       test = {
         nixos-generators = {
-          cores = 2;
-          memory = 2048;
+          virtualisation = {
+            cores = 2;
+            memorySize = 2048;
+            graphics = false;
+          };
         };
       };
     };
