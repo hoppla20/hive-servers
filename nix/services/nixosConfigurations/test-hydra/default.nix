@@ -29,6 +29,7 @@
                 guest.port = 3000;
               }
             ];
+            diskSize = 10240;
             useNixStoreImage = true;
             writableStore = true;
           };
