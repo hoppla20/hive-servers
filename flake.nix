@@ -72,8 +72,31 @@
     }
     {
       hydraJobs = {
-        inherit (self) packages nixosTests;
-        nixosConfigurations = l.mapAttrs (_: target: target.config.system.build.toplevel) self.nixosConfigurations;
+        nixosTests = l.mapAttrs (_:
+          l.mapAttrs (_:
+            l.mapAttrs (_: package:
+              package
+              // {
+                meta.schedulingPriority = 200;
+              })))
+        self.nixosTests;
+
+        packages = l.mapAttrs (_:
+          l.mapAttrs (_: package:
+            package
+            // {
+              meta.schedulingPriority = 10;
+            }))
+        self.packages;
+
+        nixosConfigurations =
+          l.mapAttrs
+          (_: target:
+            target.config.system.build.toplevel
+            // {
+              meta.schedulingPriority = 50;
+            })
+          self.nixosConfigurations;
       };
     };
 
