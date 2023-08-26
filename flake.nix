@@ -77,7 +77,7 @@
             l.mapAttrs (_: package:
               package
               // {
-                meta.schedulingPriority = 200;
+                meta.schedulingPriority = 50;
               })))
         self.nixosTests;
 
@@ -85,7 +85,7 @@
           l.mapAttrs (_: package:
             package
             // {
-              meta.schedulingPriority = 10;
+              meta.schedulingPriority = 200;
             }))
         self.packages;
 
@@ -94,7 +94,7 @@
           (_: target:
             target.config.system.build.toplevel
             // {
-              meta.schedulingPriority = 50;
+              meta.schedulingPriority = 100;
             })
           self.nixosConfigurations;
       };
