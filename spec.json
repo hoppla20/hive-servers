@@ -1,0 +1,21 @@
+{
+  "main": {
+    "enabled": 1,
+    "visible": true,
+    "name": "main",
+    "description": "",
+
+    "checkinterval": 300,
+    "schedulingshares": 100,
+    "keepnr": 1,
+    "type": 1,
+    "flake": "git+https://gitlab.vincentcui.de/server/hive-servers?",
+    "nixexprinput": "",
+    "nixexprpath": "",
+
+    "enable_dynamic_run_command": false,
+    "enableemail": false,
+    "emailoverride": "",
+    "inputs": {}
+  }
+}
