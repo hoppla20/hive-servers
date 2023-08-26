@@ -30,7 +30,6 @@
             ];
             useNixStoreImage = true;
             writableStore = true;
-            writableStoreUseTmpfs = false;
           };
         };
       };
