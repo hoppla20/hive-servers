@@ -9,7 +9,7 @@
     "schedulingshares": 100,
     "keepnr": 1,
     "type": 1,
-    "flake": "git+https://gitlab.vincentcui.de/server/hive-servers?",
+    "flake": "git+https://gitlab.vincentcui.de/server/hive-servers?ref=main",
     "nixexprinput": "",
     "nixexprpath": "",
 
