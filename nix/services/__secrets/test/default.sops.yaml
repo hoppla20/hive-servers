@@ -2,10 +2,6 @@ services:
   nextcloud:
     adminpass: ENC[AES256_GCM,data:Kt/0QNY=,iv:Kbng7DE7M9ETe/2XrOVapuyaII2wsftmnuQm5iC5gPA=,tag:RZe743s+ht9fI9MdXQD/IQ==,type:str]
     dbpass: ENC[AES256_GCM,data:sALz9FmzbQmZ,iv:/cwMC4pzQZl+Ff4//rFG/pOGgJ/SJM5ZilAKAVQWGFQ=,tag:ogjyNJMFsb7AEqx3e/SOCQ==,type:str]
-  hydra:
-    users:
-      vincent.cui:
-        password: ENC[AES256_GCM,data:zLXSfjo=,iv:23X67YDivc/zXby/g6fBx7hjlySvMkBoqX2PE2cTtLY=,tag:9HUzajMWst0ZYdVDpjBRcg==,type:str]
 sops:
   kms: []
   gcp_kms: []
@@ -21,8 +17,8 @@ sops:
         M0wyZW5IVVJ1TGNWMHczRUo4ZHBIVGMKp/2zXAFNHacLY5B4of0zDNvq53iLR0N6
         CULvktKw7PL8pZ6KYH805jv3I8klelrKw7/TAxHI+qrRHQWxSiOacQ==
         -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2023-08-26T16:41:36Z"
-  mac: ENC[AES256_GCM,data:MguG55N0GcJag3wb7oEGX1F5NSFM9YCWmqSnvKbHeLV31z3StA4B+BUEeiGJ7v0suTjjutJKXmojZLlRQucpOx1I19XfD7jYte5yNA3pKP89snClpAzQpIBb5gr7XZ363qmTvJUF7sWIee3DcNmxzdivf2A+eTHdoPZUQ8AkPeY=,iv:WDfolajlX4PsiznnuEEah2HOjSNvI0J4OP77rl2BGAQ=,tag:UHhbK+Y1+6S/x/p0zBx0+w==,type:str]
+  lastmodified: "2023-08-27T14:53:46Z"
+  mac: ENC[AES256_GCM,data:+HxW6ZwJwEt5KXA+Czr/t7xuYkUaMGfbOI9blVj2yQSjZiNZ9yp7amxDk8p2rt3PySo3LqR2VviS1zpTz13AZ112EtTwPiK8LqzKibSMnArJVp39aEWNX8H/k9/YgtgigXGkqIQsDyflzcYIWjM/9ill9q20fyvDRshfxrzYH8g=,iv:YvuVEyPdnHsJjkvmEXadbJbOxFafzr85qALD08jG8kk=,tag:T1XwdNe28ud5vBcGJke0Mw==,type:str]
   pgp:
     - created_at: "2023-08-13T10:37:27Z"
       enc: |-

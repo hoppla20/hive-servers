@@ -65,35 +65,6 @@
           flake = self;
         };
       };
-    }
-    {
-      hydraJobs = {
-        nixosTests = l.mapAttrs (_:
-          l.mapAttrs (_:
-            l.mapAttrs (_: package:
-              package
-              // {
-                meta.schedulingPriority = 50;
-              })))
-        self.nixosTests;
-
-        packages = l.mapAttrs (_:
-          l.mapAttrs (_: package:
-            package
-            // {
-              meta.schedulingPriority = 200;
-            }))
-        self.packages;
-
-        nixosConfigurations =
-          l.mapAttrs
-          (_: target:
-            target.config.system.build.toplevel
-            // {
-              meta.schedulingPriority = 100;
-            })
-          self.nixosConfigurations;
-      };
     };
 
   /*
