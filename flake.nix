@@ -42,10 +42,6 @@
         ((anything "nixosProfiles") // {cli = false;})
         nixosTests
         nixosConfigurations
-
-        # services
-        (containers "containers")
-        (arion "arion")
       ];
     }
     {
