@@ -20,7 +20,7 @@ in
     options = l.setAttrByPath targetPath {
       enable = l.mkOption {
         type = l.types.bool;
-        description = "Global disable switch for nixosModule target '${targetNixStorePath}'";
+        description = "Global disable switch for nixosProfile target '${targetNixStorePath}'";
         default = true;
       };
     };
