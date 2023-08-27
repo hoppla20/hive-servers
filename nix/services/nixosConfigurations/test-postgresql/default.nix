@@ -8,10 +8,10 @@
     pkgs = inputs.nixpkgs;
   };
 
-  imports = [
+  imports = with inputs.cells; [
     cell.nixosModules.postgresql
-    inputs.cells.nixos.nixosModules.users
-    inputs.cells.nixos.nixosProfiles.test
+    nixos.nixosModules.users
+    nixos.nixosProfiles.test
   ];
 
   hoppla = {

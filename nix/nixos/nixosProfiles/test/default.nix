@@ -2,9 +2,9 @@
   inputs,
   cell,
 }: {
-  imports = with cell; [
-    nixosModules.test
-    nixosProfiles.core
+  imports = [
+    cell.nixosModules.test
+    cell.nixosProfiles.core
   ];
 
   hoppla = {

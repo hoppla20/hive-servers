@@ -10,9 +10,9 @@ in {
   extraPythonPackages = p: [p.psycopg2];
 
   defaults = {
-    imports = [
-      inputs.cells.nixos.nixosModules.users
-      inputs.cells.nixos.nixosProfiles.test
+    imports = with inputs.cells; [
+      nixos.nixosModules.users
+      nixos.nixosProfiles.test
     ];
 
     virtualisation = {
