@@ -8,6 +8,8 @@
   inherit (inputs.localLib) helpers;
   l = lib // builtins;
 in {
+  imports = [cell.nixosProfiles.nginx];
+
   options = {
     hostName = l.mkOption {
       type = types.str;
